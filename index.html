@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>드롭아웃 트레이더 실적</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-page: #f9f9f7;
+    --surface-card: #fcfcfb;
+    --ink-primary: #0b0b0b;
+    --ink-secondary: #52514e;
+    --ink-muted: #898781;
+    --gridline: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --tooltip-bg: #ffffff;
+    --series-yeon: #2a78d6;
+    --series-jun:  #eb6834;
+    --series-hee:  #1baf7a;
+    --series-ls:   #6250d6;
+    --pos: #2a78d6;
+    --neg: #e34948;
+    --good-text: #006300;
+    --chip-bg: #f0efec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-page: #0d0d0d;
+      --surface-card: #1a1a19;
+      --ink-primary: #f0efec;
+      --ink-secondary: #c3c2b7;
+      --ink-muted: #898781;
+      --gridline: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --tooltip-bg: #242423;
+      --series-yeon: #3987e5;
+      --series-jun:  #d95926;
+      --series-hee:  #199e70;
+      --series-ls:   #9085e9;
+      --pos: #3987e5;
+      --neg: #e66767;
+      --good-text: #0ca30c;
+      --chip-bg: #242423;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-page: #0d0d0d;
+    --surface-card: #1a1a19;
+    --ink-primary: #f0efec;
+    --ink-secondary: #c3c2b7;
+    --ink-muted: #898781;
+    --gridline: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --tooltip-bg: #242423;
+    --series-yeon: #3987e5;
+    --series-jun:  #d95926;
+    --series-hee:  #199e70;
+    --series-ls:   #9085e9;
+    --pos: #3987e5;
+    --neg: #e66767;
+    --good-text: #0ca30c;
+    --chip-bg: #242423;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--surface-page);
+    color: var(--ink-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 24px 16px 48px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  header.page-head { margin-bottom: 24px; }
+  header.page-head h1 { font-size: 24px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+  header.page-head p { margin: 0; color: var(--ink-secondary); font-size: 14px; }
+  header.page-head .asof { color: var(--ink-muted); font-size: 13px; margin-top: 6px; }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 760px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+
+  .tile {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .tile .tile-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .tile .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .tile .label { font-size: 13px; color: var(--ink-secondary); font-weight: 600; letter-spacing: 0.01em; }
+  .tile .value { font-size: 26px; font-weight: 700; line-height: 1.1; }
+  .tile .sub { font-size: 13px; color: var(--ink-secondary); margin-top: 4px; }
+  .tile .sub.good { color: var(--good-text); font-weight: 600; }
+  .tile .sub.bad { color: var(--neg); font-weight: 600; }
+
+  .card {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .card h2 { font-size: 16px; font-weight: 700; margin: 0 0 2px; }
+  .card .card-sub { font-size: 13px; color: var(--ink-secondary); margin: 0 0 16px; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-secondary); }
+  .legend-item .key { width: 14px; height: 2px; border-radius: 1px; flex: none; }
+  .legend-item.dot .key { width: 8px; height: 8px; border-radius: 50%; }
+
+  svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+  svg.chart text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink-muted); }
+  svg.chart .axis-label { font-size: 11px; }
+  svg.chart .end-label { font-size: 12px; font-weight: 600; }
+  svg.chart .grid-line { stroke: var(--gridline); stroke-width: 1; }
+  svg.chart .baseline { stroke: var(--baseline); stroke-width: 1; }
+  svg.chart .crosshair { stroke: var(--ink-muted); stroke-width: 1; stroke-dasharray: 2 3; pointer-events: none; opacity: 0; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--tooltip-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    padding: 8px 10px;
+    font-size: 12.5px;
+    color: var(--ink-primary);
+    opacity: 0;
+    transition: opacity 80ms ease;
+    z-index: 10;
+    min-width: 120px;
+  }
+  .tooltip .tt-date { color: var(--ink-secondary); font-size: 11.5px; margin-bottom: 4px; font-weight: 600; }
+  .tooltip .tt-row { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+  .tooltip .tt-row + .tt-row { margin-top: 3px; }
+  .tooltip .tt-key { display: flex; align-items: center; gap: 5px; color: var(--ink-secondary); }
+  .tooltip .tt-key .stroke { width: 10px; height: 2px; border-radius: 1px; flex: none; }
+  .tooltip .tt-val { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .chart-wrap { position: relative; }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .tab-btn {
+    appearance: none; border: none; background: none; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 600; color: var(--ink-muted);
+    padding: 10px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--ink-primary); }
+  .tab-btn.active { color: var(--ink-primary); border-bottom-color: var(--accent-active, var(--series-yeon)); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  table.daily-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.daily-table th, table.daily-table td {
+    padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--gridline);
+    font-variant-numeric: tabular-nums;
+  }
+  table.daily-table th:first-child, table.daily-table td:first-child { text-align: left; font-variant-numeric: normal; }
+  table.daily-table th { color: var(--ink-muted); font-weight: 600; font-size: 12px; letter-spacing: 0.02em; }
+  table.daily-table td.pnl.pos { color: var(--good-text); font-weight: 600; }
+  table.daily-table td.pnl.neg { color: var(--neg); font-weight: 600; }
+  .table-scroll { max-height: 360px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .table-scroll table.daily-table th { position: sticky; top: 0; background: var(--surface-card); }
+  .reason-chip {
+    display: inline-block; background: var(--chip-bg); color: var(--ink-secondary);
+    font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: 600;
+  }
+
+  footer.note { font-size: 12.5px; color: var(--ink-muted); line-height: 1.6; margin-top: 8px; }
+  footer.note p { margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <h1>드롭아웃 트레이더 실적</h1>
+    <p>SOXL/SOXS 데이트레이딩 전략 — 한투 실계좌 3개(연·준·희) + LS증권 미러 계좌</p>
+    <div class="asof" id="asof"></div>
+  </header>
+
+  <section class="tiles" id="tiles"></section>
+
+  <section class="card">
+    <h2>한투 3계좌 누적 수익률 비교</h2>
+    <p class="card-sub">계좌당 2,000,000원 기준 누적 수익률 (%)</p>
+    <div class="legend" id="legend-krw"></div>
+    <div class="chart-wrap">
+      <svg class="chart" id="chart-compare" viewBox="0 0 960 320" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip-compare"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>LS증권 미러 계좌 누적 손익</h2>
+    <p class="card-sub">한투 주문을 달러로 동일 비율 미러링, 환율 1,380원 적용해 원화로 환산 — 고정 투자금 기준이 없어 % 대신 금액으로 표시</p>
+    <div class="chart-wrap">
+      <svg class="chart" id="chart-ls" viewBox="0 0 960 220" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip-ls"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>계좌별 일별 수익</h2>
+    <p class="card-sub">날짜별 손익과 누적 손익 — 탭을 눌러 계좌를 전환하세요</p>
+    <div class="tabs" id="tabs"></div>
+    <div id="tab-panels"></div>
+  </section>
+
+  <footer class="note">
+    <p><strong>2026-11-02 보정:</strong> 알파카 OVERNIGHT 피드의 지연 시세로 주간거래 손절이 잘못 체결가($49.25)로 기록된 사고를 발견하여, 한투 3계좌와 LS 계좌 모두 실제 체결가($56.8x) 기준으로 그 날 손익을 정정했습니다.</p>
+    <p><strong>2026-11-04 전체 재검증:</strong> 한투 3계좌와 LS 계좌의 모든 매도 주문을 각 증권사 체결내역(KIS get_order_executions / LS COSAQ00102)과 하나씩 대조한 결과, 거의 전 거래에서 실제 체결가가 제출가보다 약간 유리하게(가격개선) 체결되어 있었습니다 — 11/2 하루만의 문제가 아니라 반복적인 패턴이었습니다. 연 +203,412원, 준 +133,253원, 희 +128,675원, LS +$73.09를 추가로 정정해 반영했습니다 (LS는 11/2 보정치도 추정($56.86)에서 실제 체결가($56.06) 기준으로 다시 정정). 다만 09-09~09-25(연)·09-25(준·희)는 pnl_krw 필드가 없던 옛 로그 포맷이라 일별로 배분하지 못해 마지막 날 합산 처리했습니다 — 위 금액 중 일부가 포함되어 있습니다.</p>
+    <p><strong>LS 데이터 버그 수정:</strong> 재검증 과정에서 10/16의 매도 주문이 "보유수량 부족"으로 거부(rsp_cd 01721)되었는데도 이 대시보드의 재구성 로직이 이를 체결된 것처럼 잘못 집계해 그 날 +$103.67의 가짜 수익이 표시되고 있었던 것을 발견해 제거했습니다. (실제 운영 봇 코드는 이 버그가 없었고, 실거래 총수익에는 영향 없었습니다 — 이 대시보드 재구성 로직에만 있던 버그였습니다.)</p>
+    <p>한투 3계좌는 2026-10-12부터 봇이 직접 기록한 일별 결과를, 그 이전(~09-28)은 거래 로그에서 재구성한 값을 이어붙였습니다. LS 계좌는 매수·매도 로그 전체를 재구성한 값입니다.</p>
+  </footer>
+
+</div>
+
+<script>
+let DATA = null;
+
+const fmtKRW = n => Math.round(n).toLocaleString('ko-KR') + '원';
+const fmtUSD = n => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const fmtPct = n => (n > 0 ? '+' : '') + n.toFixed(1) + '%';
+const fmtDate = d => { const [y,m,day] = d.split('-'); return `${m}/${day}`; };
+
+const BASE_KRW = 2_000_000;
+const ACCOUNTS = [
+  { key: 'real2', color: 'var(--series-yeon)', raw: '#2a78d6' },
+  { key: 'real3', color: 'var(--series-jun)',  raw: '#eb6834' },
+  { key: 'real4', color: 'var(--series-hee)',  raw: '#1baf7a' },
+];
+
+function computeTotalSeries() {
+  const allSeries = [...ACCOUNTS.map(a => DATA[a.key].series), DATA.ls_mirror.series];
+  const pnlByDate = {};
+  allSeries.forEach(s => s.forEach(r => { pnlByDate[r.date] = (pnlByDate[r.date] || 0) + r.pnl; }));
+  const dates = Object.keys(pnlByDate).sort();
+  let cum = 0;
+  return dates.map(d => { cum += pnlByDate[d]; return { date: d, pnl: pnlByDate[d], cumulative: cum }; });
+}
+
+function buildTiles() {
+  const wrap = document.getElementById('tiles');
+  const rows = [];
+  ACCOUNTS.forEach(a => {
+    const acc = DATA[a.key];
+    const s = acc.series;
+    const final = s[s.length - 1].cumulative;
+    const pct = final / BASE_KRW * 100;
+    const wins = s.filter(r => r.pnl > 0).length;
+    rows.push(`
+      <div class="tile">
+        <div class="tile-top"><span class="dot" style="background:${a.color}"></span><span class="label">${acc.label} 계좌</span></div>
+        <div class="value">${fmtKRW(final)}</div>
+        <div class="sub ${pct >= 0 ? 'good' : 'bad'}">${fmtPct(pct)} · 승률 ${(wins/s.length*100).toFixed(0)}% (${s.length}일)</div>
+      </div>`);
+  });
+  const ls = DATA.ls_mirror, lsS = ls.series;
+  const lsFinal = lsS[lsS.length - 1].cumulative;
+  const lsWins = lsS.filter(r => r.pnl > 0).length;
+  rows.push(`
+    <div class="tile">
+      <div class="tile-top"><span class="dot" style="background:var(--series-ls)"></span><span class="label">LS 계좌</span></div>
+      <div class="value">${fmtKRW(lsFinal)}</div>
+      <div class="sub ${lsFinal >= 0 ? 'good' : 'bad'}">승률 ${(lsWins/lsS.length*100).toFixed(0)}% (${lsS.length}일)</div>
+    </div>`);
+
+  const totalS = DATA.total.series;
+  const totalFinal = totalS[totalS.length - 1].cumulative;
+  rows.push(`
+    <div class="tile" style="border-color:var(--ink-primary);">
+      <div class="tile-top"><span class="dot" style="background:var(--ink-primary)"></span><span class="label">총계 (4계좌 합산)</span></div>
+      <div class="value">${fmtKRW(totalFinal)}</div>
+      <div class="sub ${totalFinal >= 0 ? 'good' : 'bad'}">연+준+희+LS</div>
+    </div>`);
+  wrap.innerHTML = rows.join('');
+}
+
+function buildLegend() {
+  const wrap = document.getElementById('legend-krw');
+  wrap.innerHTML = ACCOUNTS.map(a =>
+    `<span class="legend-item"><span class="key" style="background:${a.color}"></span>${DATA[a.key].label}</span>`
+  ).join('');
+}
+
+function svgEl(tag, attrs) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+function niceTicks(min, max, count) {
+  if (min === max) { min -= 1; max += 1; }
+  const span = max - min;
+  const rawStep = span / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const norm = rawStep / mag;
+  const step = (norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10) * mag;
+  const niceMin = Math.floor(min / step) * step;
+  const niceMax = Math.ceil(max / step) * step;
+  const ticks = [];
+  for (let v = niceMin; v <= niceMax + step / 2; v += step) ticks.push(v);
+  return ticks;
+}
+
+function drawLineChart(svgId, tooltipId, series, opts) {
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(tooltipId);
+  const vb = svg.viewBox.baseVal;
+  const W = vb.width, H = vb.height;
+  const margin = { top: 16, right: 56, bottom: 28, left: 48 };
+  const plotW = W - margin.left - margin.right;
+  const plotH = H - margin.top - margin.bottom;
+
+  const dates = series[0].data.map(d => d.date);
+  const allVals = series.flatMap(s => s.data.map(d => d.value));
+  const vMin = Math.min(0, ...allVals), vMax = Math.max(0, ...allVals);
+  const ticks = niceTicks(vMin, vMax, 5);
+  const yMin = ticks[0], yMax = ticks[ticks.length - 1];
+
+  const x = i => margin.left + (dates.length === 1 ? 0 : i / (dates.length - 1)) * plotW;
+  const y = v => margin.top + (1 - (v - yMin) / (yMax - yMin)) * plotH;
+
+  svg.innerHTML = '';
+  const g = svgEl('g', {});
+  svg.appendChild(g);
+
+  // gridlines + y labels
+  ticks.forEach(t => {
+    g.appendChild(svgEl('line', { class: t === 0 ? 'baseline' : 'grid-line', x1: margin.left, x2: margin.left + plotW, y1: y(t), y2: y(t) }));
+    const lbl = svgEl('text', { class: 'axis-label', x: margin.left - 8, y: y(t) + 4, 'text-anchor': 'end' });
+    lbl.textContent = opts.yFmt(t);
+    g.appendChild(lbl);
+  });
+
+  // x labels: first, last, and a few in between
+  const xIdxs = [0, Math.floor((dates.length - 1) * 0.25), Math.floor((dates.length - 1) * 0.5), Math.floor((dates.length - 1) * 0.75), dates.length - 1];
+  [...new Set(xIdxs)].forEach(i => {
+    const lbl = svgEl('text', { class: 'axis-label', x: x(i), y: H - 6, 'text-anchor': 'middle' });
+    lbl.textContent = fmtDate(dates[i]);
+    g.appendChild(lbl);
+  });
+
+  // lines
+  series.forEach(s => {
+    const pts = s.data.map((d, i) => `${x(i)},${y(d.value)}`).join(' ');
+    g.appendChild(svgEl('polyline', { points: pts, fill: 'none', stroke: s.color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    const lastPt = s.data[s.data.length - 1];
+    g.appendChild(svgEl('circle', { cx: x(s.data.length - 1), cy: y(lastPt.value), r: 4, fill: s.color, stroke: 'var(--surface-card)', 'stroke-width': 2 }));
+    const endLbl = svgEl('text', { class: 'end-label', x: x(s.data.length - 1) + 8, y: y(lastPt.value) + 4 });
+    endLbl.textContent = s.label;
+    endLbl.setAttribute('fill', s.color);
+    g.appendChild(endLbl);
+  });
+
+  // crosshair + hover
+  const crosshair = svgEl('line', { class: 'crosshair', x1: 0, x2: 0, y1: margin.top, y2: margin.top + plotH });
+  g.appendChild(crosshair);
+  const hitRect = svgEl('rect', { x: margin.left, y: margin.top, width: plotW, height: plotH, fill: 'transparent' });
+  g.appendChild(hitRect);
+
+  function showAt(i) {
+    crosshair.setAttribute('x1', x(i));
+    crosshair.setAttribute('x2', x(i));
+    crosshair.style.opacity = 1;
+    const rows = series.map(s => `
+      <div class="tt-row">
+        <span class="tt-key"><span class="stroke" style="background:${s.color}"></span>${s.label}</span>
+        <span class="tt-val">${opts.ttFmt(s.data[i].value)}</span>
+      </div>`).join('');
+    tooltip.innerHTML = `<div class="tt-date">${dates[i]}</div>${rows}`;
+    tooltip.style.opacity = 1;
+    const px = x(i) / W * svg.getBoundingClientRect().width;
+    const py = y(series[0].data[i].value) / H * svg.getBoundingClientRect().height;
+    tooltip.style.left = Math.min(px + 12, svg.getBoundingClientRect().width - 150) + 'px';
+    tooltip.style.top = Math.max(py - 50, 0) + 'px';
+  }
+  function hide() { crosshair.style.opacity = 0; tooltip.style.opacity = 0; }
+
+  hitRect.addEventListener('pointermove', e => {
+    const rect = svg.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width * W;
+    let i = Math.round((px - margin.left) / plotW * (dates.length - 1));
+    i = Math.max(0, Math.min(dates.length - 1, i));
+    showAt(i);
+  });
+  hitRect.addEventListener('pointerleave', hide);
+}
+
+function drawBarChart(svgId, tooltipId, data, opts) {
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(tooltipId);
+  const vb = svg.viewBox.baseVal;
+  const W = vb.width, H = vb.height;
+  const margin = { top: 16, right: 16, bottom: 28, left: 56 };
+  const plotW = W - margin.left - margin.right;
+  const plotH = H - margin.top - margin.bottom;
+
+  const vals = data.map(d => d.pnl);
+  const vMin = Math.min(0, ...vals), vMax = Math.max(0, ...vals);
+  const ticks = niceTicks(vMin, vMax, 5);
+  const yMin = ticks[0], yMax = ticks[ticks.length - 1];
+
+  const n = data.length;
+  const slot = plotW / n;
+  const barW = Math.min(24, slot * 0.6);
+  const x = i => margin.left + i * slot + slot / 2;
+  const y = v => margin.top + (1 - (v - yMin) / (yMax - yMin)) * plotH;
+  const y0 = y(0);
+
+  svg.innerHTML = '';
+  const g = svgEl('g', {});
+  svg.appendChild(g);
+
+  ticks.forEach(t => {
+    g.appendChild(svgEl('line', { class: t === 0 ? 'baseline' : 'grid-line', x1: margin.left, x2: margin.left + plotW, y1: y(t), y2: y(t) }));
+    const lbl = svgEl('text', { class: 'axis-label', x: margin.left - 8, y: y(t) + 4, 'text-anchor': 'end' });
+    lbl.textContent = opts.yFmt(t);
+    g.appendChild(lbl);
+  });
+
+  const xStep = Math.max(1, Math.ceil(n / 10));
+  data.forEach((d, i) => {
+    if (i % xStep === 0 || i === n - 1) {
+      const lbl = svgEl('text', { class: 'axis-label', x: x(i), y: H - 6, 'text-anchor': 'middle' });
+      lbl.textContent = fmtDate(d.date);
+      g.appendChild(lbl);
+    }
+  });
+
+  data.forEach((d, i) => {
+    const barY = Math.min(y0, y(d.pnl));
+    const barH = Math.max(1, Math.abs(y(d.pnl) - y0));
+    const rect = svgEl('rect', {
+      x: x(i) - barW / 2, y: barY, width: barW, height: barH,
+      rx: 4, fill: d.pnl >= 0 ? 'var(--pos)' : 'var(--neg)', opacity: 0.9,
+    });
+    g.appendChild(rect);
+    const hit = svgEl('rect', { x: margin.left + i * slot, y: margin.top, width: slot, height: plotH, fill: 'transparent' });
+    hit.addEventListener('pointerenter', () => rect.setAttribute('opacity', 1));
+    hit.addEventListener('pointerleave', () => { rect.setAttribute('opacity', 0.9); tooltip.style.opacity = 0; });
+    hit.addEventListener('pointermove', e => {
+      const tradeLines = (d.trades || []).map(t => `<div class="tt-row"><span class="tt-key">${t.symbol}</span><span class="tt-val">$${t.buy_price.toFixed(2)}→$${t.sell_price.toFixed(2)}</span></div>`).join('');
+      tooltip.innerHTML = `<div class="tt-date">${d.date}</div>
+        ${tradeLines}
+        <div class="tt-row"><span class="tt-key">일별 손익</span><span class="tt-val">${opts.ttFmt(d.pnl)}</span></div>
+        <div class="tt-row"><span class="tt-key">누적</span><span class="tt-val">${opts.ttFmt(d.cumulative)}</span></div>`;
+      tooltip.style.opacity = 1;
+      const rect2 = svg.getBoundingClientRect();
+      const px = x(i) / W * rect2.width;
+      tooltip.style.left = Math.min(px + 10, rect2.width - 160) + 'px';
+      tooltip.style.top = '0px';
+    });
+    g.appendChild(hit);
+  });
+}
+
+function buildCompareChart() {
+  const series = ACCOUNTS.map(a => ({
+    label: DATA[a.key].label,
+    color: a.color,
+    data: DATA[a.key].series.map(r => ({ date: r.date, value: r.cumulative / BASE_KRW * 100 })),
+  }));
+  drawLineChart('chart-compare', 'tooltip-compare', series, {
+    yFmt: v => v.toFixed(0) + '%',
+    ttFmt: v => fmtPct(v),
+  });
+}
+
+function buildLsChart() {
+  const series = [{
+    label: 'LS',
+    color: 'var(--series-ls)',
+    data: DATA.ls_mirror.series.map(r => ({ date: r.date, value: r.cumulative })),
+  }];
+  drawLineChart('chart-ls', 'tooltip-ls', series, {
+    yFmt: v => Math.abs(v) >= 100000 ? (v/1000).toFixed(0) + 'K' : v.toFixed(0),
+    ttFmt: v => fmtKRW(v),
+  });
+}
+
+function buildTabs() {
+  const tabsWrap = document.getElementById('tabs');
+  const panelsWrap = document.getElementById('tab-panels');
+  const defs = [
+    ...ACCOUNTS.map(a => ({ key: a.key, label: DATA[a.key].label, color: a.raw, currency: 'KRW' })),
+    { key: 'ls_mirror', label: 'LS', color: '#6250d6', currency: 'KRW' },
+    { key: 'total', label: '총계', color: 'var(--ink-primary)', currency: 'KRW' },
+  ];
+
+  tabsWrap.innerHTML = defs.map((d, i) =>
+    `<button class="tab-btn${i === 0 ? ' active' : ''}" data-key="${d.key}" style="--accent-active:${d.color}">${d.label}</button>`
+  ).join('');
+
+  panelsWrap.innerHTML = defs.map((d, i) => {
+    const fmt = d.currency === 'KRW' ? fmtKRW : fmtUSD;
+    const fmtTrades = r => {
+      if (!r.trades || r.trades.length === 0) return '<span style="color:var(--ink-muted)">-</span>';
+      return r.trades.map(t =>
+        `<span class="reason-chip">${t.symbol}</span> $${t.buy_price.toFixed(2)} → $${t.sell_price.toFixed(2)}`
+      ).join('<br>');
+    };
+    const rows = DATA[d.key].series.slice().reverse().map(r => `
+      <tr>
+        <td>${r.date}</td>
+        <td style="text-align:left;">${fmtTrades(r)}</td>
+        <td class="pnl ${r.pnl >= 0 ? 'pos' : 'neg'}">${r.pnl >= 0 ? '+' : ''}${fmt(r.pnl)}</td>
+        <td>${fmt(r.cumulative)}</td>
+      </tr>`).join('');
+    return `
+      <div class="tab-panel${i === 0 ? ' active' : ''}" data-key="${d.key}">
+        <div class="chart-wrap" style="margin-bottom:16px;">
+          <svg class="chart" id="bar-${d.key}" viewBox="0 0 960 220" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="tooltip" id="tooltip-bar-${d.key}"></div>
+        </div>
+        <div class="table-scroll">
+          <table class="daily-table">
+            <thead><tr><th>날짜</th><th style="text-align:left;">매수 종목 / 매수가 → 매도가</th><th>일별 손익</th><th>누적 손익</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }).join('');
+
+  tabsWrap.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabsWrap.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      panelsWrap.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const key = btn.dataset.key;
+      panelsWrap.querySelector(`.tab-panel[data-key="${key}"]`).classList.add('active');
+      drawBarForTab(key);
+    });
+  });
+
+  drawBarForTab(defs[0].key);
+}
+
+function drawBarForTab(key) {
+  const acc = DATA[key];
+  const isKrw = acc.currency === 'KRW';
+  const fmt = isKrw ? fmtKRW : fmtUSD;
+  drawBarChart(`bar-${key}`, `tooltip-bar-${key}`, acc.series, {
+    yFmt: v => isKrw ? (Math.abs(v) >= 100000 ? (v/1000).toFixed(0)+'K' : v.toFixed(0)) : '$'+v.toFixed(0),
+    ttFmt: v => fmt(v),
+  });
+}
+
+function setAsOf() {
+  const all = Object.values(DATA).flatMap(a => a.series.map(r => r.date));
+  const last = all.sort().slice(-1)[0];
+  document.getElementById('asof').textContent = `데이터 기준일: ${last} (한투 계좌 재시작 후 체결가 반영 반영됨)`;
+}
+
+async function init() {
+  try {
+    const res = await fetch('./daily_series.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    DATA = await res.json();
+  } catch (err) {
+    document.querySelector('.wrap').insertAdjacentHTML('afterbegin',
+      '<div style="padding:16px;border-radius:8px;background:var(--neg);color:#fff;margin-bottom:16px;">데이터를 불러오지 못했습니다: ' + err.message + '</div>');
+    return;
+  }
+  DATA.total = { label: '총계', currency: 'KRW', series: computeTotalSeries() };
+  buildTiles();
+  buildLegend();
+  buildCompareChart();
+  buildLsChart();
+  buildTabs();
+  setAsOf();
+}
+
+init();
+window.addEventListener('resize', () => { if (!DATA) return; buildCompareChart(); buildLsChart(); drawBarForTab(document.querySelector('.tab-btn.active').dataset.key); });
+</script>
+</body>
+</html>
