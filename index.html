@@ -180,9 +180,41 @@
 
   footer.note { font-size: 12.5px; color: var(--ink-muted); line-height: 1.6; margin-top: 8px; }
   footer.note p { margin: 0 0 6px; }
+
+  #gate {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-page);
+  }
+  #gate .box {
+    width: 100%; max-width: 320px; margin: 0 16px;
+    background: var(--surface-card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px 24px; text-align: center;
+  }
+  #gate h2 { font-size: 16px; font-weight: 700; margin: 0 0 16px; }
+  #gate input {
+    width: 100%; box-sizing: border-box; font-size: 20px; letter-spacing: 0.3em; text-align: center;
+    padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface-page); color: var(--ink-primary); font-variant-numeric: tabular-nums;
+  }
+  #gate input:focus { outline: 2px solid var(--series-yeon); outline-offset: 1px; }
+  #gate button {
+    width: 100%; margin-top: 10px; padding: 10px 12px; border-radius: 8px; border: none;
+    background: var(--series-yeon); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  #gate .err { color: var(--neg); font-size: 13px; margin-top: 8px; min-height: 16px; }
+  .wrap { display: none; }
 </style>
 </head>
 <body>
+<div id="gate">
+  <form class="box" id="gate-form">
+    <h2>비밀번호를 입력하세요</h2>
+    <input type="password" id="gate-input" inputmode="numeric" autocomplete="off" autofocus>
+    <button type="submit">확인</button>
+    <div class="err" id="gate-err"></div>
+  </form>
+</div>
 <div class="wrap">
 
   <header class="page-head">
@@ -584,7 +616,33 @@ async function init() {
   setAsOf();
 }
 
-init();
+const GATE_PASSWORD = '1111';
+const GATE_STORAGE_KEY = 'soxltrade_unlocked';
+
+function unlockDashboard() {
+  document.getElementById('gate').remove();
+  document.querySelector('.wrap').style.display = '';
+  init();
+}
+
+try {
+  if (localStorage.getItem(GATE_STORAGE_KEY) === '1') unlockDashboard();
+} catch (err) {
+  // localStorage unavailable (private mode etc.) -- just ask again every visit
+}
+
+document.getElementById('gate-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = document.getElementById('gate-input');
+  if (input.value === GATE_PASSWORD) {
+    try { localStorage.setItem(GATE_STORAGE_KEY, '1'); } catch (err) {}
+    unlockDashboard();
+  } else {
+    document.getElementById('gate-err').textContent = '비밀번호가 올바르지 않습니다';
+    input.value = '';
+    input.focus();
+  }
+});
 window.addEventListener('resize', () => { if (!DATA) return; buildCompareChart(); buildLsChart(); drawBarForTab(document.querySelector('.tab-btn.active').dataset.key); });
 </script>
 </body>
