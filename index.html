@@ -617,7 +617,6 @@ async function init() {
 }
 
 const GATE_PASSWORD = '1111';
-const GATE_STORAGE_KEY = 'soxltrade_unlocked';
 
 function unlockDashboard() {
   document.getElementById('gate').remove();
@@ -625,17 +624,10 @@ function unlockDashboard() {
   init();
 }
 
-try {
-  if (localStorage.getItem(GATE_STORAGE_KEY) === '1') unlockDashboard();
-} catch (err) {
-  // localStorage unavailable (private mode etc.) -- just ask again every visit
-}
-
 document.getElementById('gate-form').addEventListener('submit', e => {
   e.preventDefault();
   const input = document.getElementById('gate-input');
   if (input.value === GATE_PASSWORD) {
-    try { localStorage.setItem(GATE_STORAGE_KEY, '1'); } catch (err) {}
     unlockDashboard();
   } else {
     document.getElementById('gate-err').textContent = '비밀번호가 올바르지 않습니다';
