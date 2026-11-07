@@ -267,6 +267,9 @@ const fmtKRW = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const fmtUSD = n => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 const fmtPct = n => (n > 0 ? '+' : '') + n.toFixed(1) + '%';
 const fmtDate = d => { const [y,m,day] = d.split('-'); return `${m}/${day}`; };
+const WEEKDAY_KO = ['일', '월', '화', '수', '목', '금', '토'];
+const weekday = d => WEEKDAY_KO[new Date(d + 'T00:00:00Z').getUTCDay()];
+const fmtDateWithWeekday = d => `${d} (${weekday(d)})`;
 
 const BASE_KRW = 2_000_000;
 const ACCOUNTS = [
@@ -438,7 +441,7 @@ function drawLineChart(svgId, tooltipId, series, opts) {
         <span class="tt-key"><span class="stroke" style="background:${s.color}"></span>${s.label}</span>
         <span class="tt-val">${opts.ttFmt(s.data[i].value)}</span>
       </div>`).join('');
-    tooltip.innerHTML = `<div class="tt-date">${dates[i]}</div>${rows}`;
+    tooltip.innerHTML = `<div class="tt-date">${fmtDateWithWeekday(dates[i])}</div>${rows}`;
     tooltip.style.opacity = 1;
     const px = x(i) / W * svg.getBoundingClientRect().width;
     const py = y(series[0].data[i].value) / H * svg.getBoundingClientRect().height;
@@ -511,7 +514,7 @@ function drawBarChart(svgId, tooltipId, data, opts) {
     hit.addEventListener('pointerleave', () => { rect.setAttribute('opacity', 0.9); tooltip.style.opacity = 0; });
     hit.addEventListener('pointermove', e => {
       const tradeLines = (d.trades || []).map(t => `<div class="tt-row"><span class="tt-key">${t.symbol}</span><span class="tt-val">$${t.buy_price.toFixed(2)}→$${t.sell_price.toFixed(2)}</span></div>`).join('');
-      tooltip.innerHTML = `<div class="tt-date">${d.date}</div>
+      tooltip.innerHTML = `<div class="tt-date">${fmtDateWithWeekday(d.date)}</div>
         ${tradeLines}
         <div class="tt-row"><span class="tt-key">일별 손익</span><span class="tt-val">${opts.ttFmt(d.pnl)}</span></div>
         <div class="tt-row"><span class="tt-key">누적</span><span class="tt-val">${opts.ttFmt(d.cumulative)}</span></div>`;
@@ -572,7 +575,7 @@ function buildTabs() {
     };
     const rows = DATA[d.key].series.slice().reverse().map(r => `
       <tr>
-        <td>${r.date}</td>
+        <td>${fmtDateWithWeekday(r.date)}</td>
         <td style="text-align:left;">${fmtTrades(r)}</td>
         <td class="pnl ${r.pnl >= 0 ? 'pos' : 'neg'}">${r.pnl >= 0 ? '+' : ''}${fmt(r.pnl)}</td>
         <td>${fmt(r.cumulative)}</td>
