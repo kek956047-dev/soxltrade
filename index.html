@@ -277,11 +277,36 @@ const ACCOUNTS = [
 
 function computeTotalSeries() {
   const allSeries = [...ACCOUNTS.map(a => DATA[a.key].series), DATA.ls_mirror.series];
+  // each account's displayed series can start with a cumulative that's
+  // already nonzero (real2/3/4 carry a hidden pre-09-28 baseline, from
+  // trading before the dashboard's displayed window) -- summing only the
+  // displayed daily "pnl" values drops that baseline entirely, which is
+  // why a plain per-date resum undercounted vs. the sum of each account's
+  // own final tile total. Carry each account's own baseline forward.
+  const baseline = allSeries.reduce((sum, s) => sum + (s.length ? s[0].cumulative - s[0].pnl : 0), 0);
   const pnlByDate = {};
   allSeries.forEach(s => s.forEach(r => { pnlByDate[r.date] = (pnlByDate[r.date] || 0) + r.pnl; }));
   const dates = Object.keys(pnlByDate).sort();
-  let cum = 0;
-  return dates.map(d => { cum += pnlByDate[d]; return { date: d, pnl: pnlByDate[d], cumulative: cum }; });
+  let cum = baseline;
+  const series = dates.map(d => { cum += pnlByDate[d]; return { date: d, pnl: pnlByDate[d], cumulative: cum }; });
+
+  // some accounts' own cumulative has internal jumps that don't match a
+  // plain running sum of their own daily pnl (real2/3/4's own tracked
+  // total absorbed manual corrections applied mid-session on days after
+  // they'd already been logged -- see this session's fill-price audit).
+  // Rather than silently disagree with the 4 account tiles above it,
+  // force the final day here to match their sum exactly and label the gap.
+  const trueFinalTotal = allSeries.reduce((sum, s) => sum + (s.length ? s[s.length - 1].cumulative : 0), 0);
+  if (series.length) {
+    const drift = trueFinalTotal - series[series.length - 1].cumulative;
+    if (Math.abs(drift) > 1) {
+      const last = series[series.length - 1];
+      last.pnl += drift;
+      last.cumulative += drift;
+      last._note = '계좌별 합계와 맞추기 위한 보정: 일부 계좌의 누적값에 이벤트 로그만으론 날짜별로 재구성 안 되는 과거 조정분이 섞여 있어, 그 차이를 마지막 날에 합산 반영';
+    }
+  }
+  return series;
 }
 
 function buildTiles() {
