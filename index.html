@@ -104,6 +104,7 @@
   .tile .sub { font-size: 13px; color: var(--ink-secondary); margin-top: 4px; }
   .tile .sub.good { color: var(--good-text); font-weight: 600; }
   .tile .sub.bad { color: var(--neg); font-weight: 600; }
+  .tile .principal { font-size: 12px; color: var(--ink-muted); margin-top: 6px; }
 
   .card {
     background: var(--surface-card);
@@ -237,7 +238,7 @@
 
   <section class="card">
     <h2>LS증권 미러 계좌 누적 손익</h2>
-    <p class="card-sub">한투 주문을 달러로 동일 비율 미러링, 환율 1,380원 적용해 원화로 환산 — 고정 투자금 기준이 없어 % 대신 금액으로 표시</p>
+    <p class="card-sub">한투 주문을 달러로 동일 비율 미러링, 환율 1,380원 적용해 원화로 환산 — 수익률은 현재 누적 입금액(507만원) 기준 근사치</p>
     <div class="chart-wrap">
       <svg class="chart" id="chart-ls" viewBox="0 0 960 220" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip-ls"></div>
@@ -272,6 +273,7 @@ const weekday = d => WEEKDAY_KO[new Date(d + 'T00:00:00Z').getUTCDay()];
 const fmtDateWithWeekday = d => `${d} (${weekday(d)})`;
 
 const BASE_KRW = 2_000_000;
+const LS_BASE_KRW = 5_070_000; // 2026-11-13 기준 누적 입금액(215만+65만+160만+67만) -- 입금 시점마다 달라서 전체 기간 % 수익률은 근사치
 const ACCOUNTS = [
   { key: 'real2', color: 'var(--series-yeon)', raw: '#2a78d6' },
   { key: 'real3', color: 'var(--series-jun)',  raw: '#eb6834' },
@@ -320,16 +322,19 @@ function buildTiles() {
         <div class="tile-top"><span class="dot" style="background:${a.color}"></span><span class="label">${acc.label} 계좌</span></div>
         <div class="value">${fmtKRW(final)}</div>
         <div class="sub ${pct >= 0 ? 'good' : 'bad'}">${fmtPct(pct)} · 승률 ${(wins/s.length*100).toFixed(0)}% (${s.length}일)</div>
+        <div class="principal">원금 ${fmtKRW(BASE_KRW)}</div>
       </div>`);
   });
   const ls = DATA.ls_mirror, lsS = ls.series;
   const lsFinal = lsS[lsS.length - 1].cumulative;
+  const lsPct = lsFinal / LS_BASE_KRW * 100;
   const lsWins = lsS.filter(r => r.pnl > 0).length;
   rows.push(`
     <div class="tile">
       <div class="tile-top"><span class="dot" style="background:var(--series-ls)"></span><span class="label">LS 계좌</span></div>
       <div class="value">${fmtKRW(lsFinal)}</div>
-      <div class="sub ${lsFinal >= 0 ? 'good' : 'bad'}">승률 ${(lsWins/lsS.length*100).toFixed(0)}% (${lsS.length}일)</div>
+      <div class="sub ${lsFinal >= 0 ? 'good' : 'bad'}">${fmtPct(lsPct)} · 승률 ${(lsWins/lsS.length*100).toFixed(0)}% (${lsS.length}일)</div>
+      <div class="principal">원금 ${fmtKRW(LS_BASE_KRW)}</div>
     </div>`);
 
   const totalS = DATA.total.series;
