@@ -172,6 +172,9 @@
   table.daily-table th { color: var(--ink-muted); font-weight: 600; font-size: 12px; letter-spacing: 0.02em; }
   table.daily-table td.pnl.pos { color: var(--good-text); font-weight: 600; }
   table.daily-table td.pnl.neg { color: var(--neg); font-weight: 600; }
+  .trade-pct { font-size: 12px; font-variant-numeric: tabular-nums; }
+  .trade-pct.pos { color: var(--good-text); }
+  .trade-pct.neg { color: var(--neg); }
   .table-scroll { max-height: 360px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
   .table-scroll table.daily-table th { position: sticky; top: 0; background: var(--surface-card); }
   .reason-chip {
@@ -512,7 +515,10 @@ function drawBarChart(svgId, tooltipId, data, opts) {
     hit.addEventListener('pointerenter', () => rect.setAttribute('opacity', 1));
     hit.addEventListener('pointerleave', () => { rect.setAttribute('opacity', 0.9); tooltip.style.opacity = 0; });
     hit.addEventListener('pointermove', e => {
-      const tradeLines = (d.trades || []).map(t => `<div class="tt-row"><span class="tt-key">${t.symbol}</span><span class="tt-val">$${t.buy_price.toFixed(2)}→$${t.sell_price.toFixed(2)}</span></div>`).join('');
+      const tradeLines = (d.trades || []).map(t => {
+        const pct = (t.sell_price / t.buy_price - 1) * 100;
+        return `<div class="tt-row"><span class="tt-key">${t.symbol}</span><span class="tt-val">$${t.buy_price.toFixed(2)}→$${t.sell_price.toFixed(2)} (${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%)</span></div>`;
+      }).join('');
       tooltip.innerHTML = `<div class="tt-date">${fmtDateWithWeekday(d.date)}</div>
         ${tradeLines}
         <div class="tt-row"><span class="tt-key">일별 손익</span><span class="tt-val">${opts.ttFmt(d.pnl)}</span></div>
@@ -568,9 +574,10 @@ function buildTabs() {
     const fmt = d.currency === 'KRW' ? fmtKRW : fmtUSD;
     const fmtTrades = r => {
       if (!r.trades || r.trades.length === 0) return '<span style="color:var(--ink-muted)">-</span>';
-      return r.trades.map(t =>
-        `<span class="reason-chip">${t.symbol}</span> $${t.buy_price.toFixed(2)} → $${t.sell_price.toFixed(2)}`
-      ).join('<br>');
+      return r.trades.map(t => {
+        const pct = (t.sell_price / t.buy_price - 1) * 100;
+        return `<span class="reason-chip">${t.symbol}</span> $${t.buy_price.toFixed(2)} → $${t.sell_price.toFixed(2)} <span class="trade-pct ${pct >= 0 ? 'pos' : 'neg'}">(${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%)</span>`;
+      }).join('<br>');
     };
     const rows = DATA[d.key].series.slice().reverse().map(r => `
       <tr>
@@ -587,7 +594,7 @@ function buildTabs() {
         </div>
         <div class="table-scroll">
           <table class="daily-table">
-            <thead><tr><th>날짜</th><th style="text-align:left;">매수 종목 / 매수가 → 매도가</th><th>일별 손익</th><th>누적 손익</th></tr></thead>
+            <thead><tr><th>날짜</th><th style="text-align:left;">매수 종목 / 매수가 → 매도가 (수익률)</th><th>일별 손익</th><th>누적 손익</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
         </div>
