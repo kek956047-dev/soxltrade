@@ -231,7 +231,7 @@
 
   <section class="card">
     <h2>한투 3계좌 누적 수익률 비교</h2>
-    <p class="card-sub">계좌별 원금(각 타일 참고) 기준 누적 수익률 (%)</p>
+    <p class="card-sub">계좌당 4,000,000원 기준 누적 수익률 (%)</p>
     <div class="legend" id="legend-krw"></div>
     <div class="chart-wrap">
       <svg class="chart" id="chart-compare" viewBox="0 0 960 320" preserveAspectRatio="xMidYMid meet"></svg>
@@ -276,12 +276,12 @@ const weekday = d => WEEKDAY_KO[new Date(d + 'T00:00:00Z').getUTCDay()];
 const fmtDateWithWeekday = d => `${d} (${weekday(d)})`;
 
 const LS_BASE_KRW = 8_340_000; // 2026-11-16 기준 누적 입금액(215만+65만+160만+67만+327만) -- 입금 시점마다 달라서 전체 기간 % 수익률은 근사치
-// 2026-11-16: 연/준/희 계좌별로 추가 환전액이 서로 달라져서(177/192/195만원)
-// 더 이상 공통 BASE_KRW 하나로 못 묶고 계좌별 원금으로 분리함.
+// 2026-11-16: 연/준/희 investment_krw 기준금액을 200만 -> 400만원으로 올림
+// (봇 설정도 동일하게 --investment-krw 4000000 으로 반영).
 const ACCOUNTS = [
-  { key: 'real2', color: 'var(--series-yeon)', raw: '#2a78d6', base: 2_000_000 + 1_770_000 },
-  { key: 'real3', color: 'var(--series-jun)',  raw: '#eb6834', base: 2_000_000 + 1_920_000 },
-  { key: 'real4', color: 'var(--series-hee)',  raw: '#1baf7a', base: 2_000_000 + 1_950_000 },
+  { key: 'real2', color: 'var(--series-yeon)', raw: '#2a78d6', base: 4_000_000 },
+  { key: 'real3', color: 'var(--series-jun)',  raw: '#eb6834', base: 4_000_000 },
+  { key: 'real4', color: 'var(--series-hee)',  raw: '#1baf7a', base: 4_000_000 },
 ];
 
 function computeTotalSeries() {
