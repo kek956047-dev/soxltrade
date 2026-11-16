@@ -231,7 +231,7 @@
 
   <section class="card">
     <h2>한투 3계좌 누적 수익률 비교</h2>
-    <p class="card-sub">계좌당 4,000,000원 기준 누적 수익률 (%)</p>
+    <p class="card-sub">계좌당 기준금액 대비 누적 수익률 (%) — 2026-11-16부터 200만→400만원 인상, 그 이전 날짜는 200만원 기준으로 계산</p>
     <div class="legend" id="legend-krw"></div>
     <div class="chart-wrap">
       <svg class="chart" id="chart-compare" viewBox="0 0 960 320" preserveAspectRatio="xMidYMid meet"></svg>
@@ -276,13 +276,20 @@ const weekday = d => WEEKDAY_KO[new Date(d + 'T00:00:00Z').getUTCDay()];
 const fmtDateWithWeekday = d => `${d} (${weekday(d)})`;
 
 const LS_BASE_KRW = 8_340_000; // 2026-11-16 기준 누적 입금액(215만+65만+160만+67만+327만) -- 입금 시점마다 달라서 전체 기간 % 수익률은 근사치
-// 2026-11-16: 연/준/희 investment_krw 기준금액을 200만 -> 400만원으로 올림
-// (봇 설정도 동일하게 --investment-krw 4000000 으로 반영).
+// 2026-11-16: investment_krw 기준금액을 200만 -> 400만원으로 올림 (봇 설정도
+// --investment-krw 4000000 으로 동일 반영). 과거 날짜까지 지금의 400만원으로
+// 나누면 그때는 200만원 기준으로 번 걸 더 낮게 보이게 왜곡하므로, 날짜별로
+// "그 시점에 실제 적용되던" 기준금액을 쓰도록 baseHistory로 구간을 나눔.
 const ACCOUNTS = [
-  { key: 'real2', color: 'var(--series-yeon)', raw: '#2a78d6', base: 4_000_000 },
-  { key: 'real3', color: 'var(--series-jun)',  raw: '#eb6834', base: 4_000_000 },
-  { key: 'real4', color: 'var(--series-hee)',  raw: '#1baf7a', base: 4_000_000 },
+  { key: 'real2', color: 'var(--series-yeon)', raw: '#2a78d6', baseHistory: [['0000-00-00', 2_000_000], ['2026-11-16', 4_000_000]] },
+  { key: 'real3', color: 'var(--series-jun)',  raw: '#eb6834', baseHistory: [['0000-00-00', 2_000_000], ['2026-11-16', 4_000_000]] },
+  { key: 'real4', color: 'var(--series-hee)',  raw: '#1baf7a', baseHistory: [['0000-00-00', 2_000_000], ['2026-11-16', 4_000_000]] },
 ];
+const baseAt = (history, date) => {
+  let b = history[0][1];
+  for (const [d, v] of history) { if (date >= d) b = v; else break; }
+  return b;
+};
 
 function computeTotalSeries() {
   const allSeries = [...ACCOUNTS.map(a => DATA[a.key].series), DATA.ls_mirror.series];
@@ -319,14 +326,15 @@ function buildTiles() {
     const acc = DATA[a.key];
     const s = acc.series;
     const final = s[s.length - 1].cumulative;
-    const pct = final / a.base * 100;
+    const curBase = baseAt(a.baseHistory, s[s.length - 1].date);
+    const pct = final / curBase * 100;
     const wins = s.filter(r => r.pnl > 0).length;
     rows.push(`
       <div class="tile">
         <div class="tile-top"><span class="dot" style="background:${a.color}"></span><span class="label">${acc.label} 계좌</span></div>
         <div class="value">${fmtKRW(final)}</div>
         <div class="sub ${pct >= 0 ? 'good' : 'bad'}">${fmtPct(pct)} · 승률 ${(wins/s.length*100).toFixed(0)}% (${s.length}일)</div>
-        <div class="principal">원금 ${fmtKRW(a.base)}</div>
+        <div class="principal">원금 ${fmtKRW(curBase)}</div>
       </div>`);
   });
   const ls = DATA.ls_mirror, lsS = ls.series;
@@ -538,7 +546,7 @@ function buildCompareChart() {
   const series = ACCOUNTS.map(a => ({
     label: DATA[a.key].label,
     color: a.color,
-    data: DATA[a.key].series.map(r => ({ date: r.date, value: r.cumulative / a.base * 100 })),
+    data: DATA[a.key].series.map(r => ({ date: r.date, value: r.cumulative / baseAt(a.baseHistory, r.date) * 100 })),
   }));
   drawLineChart('chart-compare', 'tooltip-compare', series, {
     yFmt: v => v.toFixed(0) + '%',
