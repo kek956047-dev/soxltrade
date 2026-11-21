@@ -1,6 +1,6 @@
 {
  "date": "2026-11-20",
- "generated_at": "2026-11-21T03:45:43.935205-05:00",
+ "generated_at": "2026-11-21T04:25:18.728710-05:00",
  "note": "SOXL = 3x semiconductor bull ETF, SOXS = 3x bear. Times are US Eastern. change_pct = regular close vs prior close; afterhours_pct = last afterhours trade vs regular close.",
  "prices": {
   "SOXL": {
@@ -116,6 +116,7 @@
  },
  "events_today": [],
  "events_next": [],
+ "bot_pick": "SOXS",
  "news": [
   {
    "time": "2026-11-20T21:31:30Z",
