@@ -1,0 +1,220 @@
+{
+ "date": "2026-11-20",
+ "generated_at": "2026-11-21T03:45:43.935205-05:00",
+ "note": "SOXL = 3x semiconductor bull ETF, SOXS = 3x bear. Times are US Eastern. change_pct = regular close vs prior close; afterhours_pct = last afterhours trade vs regular close.",
+ "prices": {
+  "SOXL": {
+   "prev_close": 45.3,
+   "open": 42.41,
+   "high": 42.57,
+   "low": 29.82,
+   "close": 30.865,
+   "change_pct": -31.865342163355404,
+   "open_gap_pct": -6.3796909492273794,
+   "afterhours_last": 33.36,
+   "afterhours_pct": 8.083589826664506
+  },
+  "SOXS": {
+   "prev_close": 63.14,
+   "open": 67.01,
+   "high": 84.8599,
+   "low": 67.01,
+   "close": 83.25,
+   "change_pct": 31.849857459613553,
+   "open_gap_pct": 6.1292366170415,
+   "afterhours_last": 76.5,
+   "afterhours_pct": -8.108108108108103
+  },
+  "NVDA": {
+   "prev_close": 145.98,
+   "open": 143.52,
+   "high": 143.725,
+   "low": 124.5,
+   "close": 125.81,
+   "change_pct": -13.816961227565416,
+   "open_gap_pct": -1.6851623510069746,
+   "afterhours_last": 130.01,
+   "afterhours_pct": 3.3383673793816016
+  },
+  "AMD": {
+   "prev_close": 489.19,
+   "open": 471.23,
+   "high": 474.79,
+   "low": 418.76,
+   "close": 424.3,
+   "change_pct": -13.264784644003347,
+   "open_gap_pct": -3.6713751303174558,
+   "afterhours_last": 439.39,
+   "afterhours_pct": 3.556445910912087
+  },
+  "AVGO": {
+   "prev_close": 346.65,
+   "open": 343.01,
+   "high": 343.01,
+   "low": 301.02,
+   "close": 304.17,
+   "change_pct": -12.254435309389866,
+   "open_gap_pct": -1.0500504831963076,
+   "afterhours_last": 311.5,
+   "afterhours_pct": 2.4098366045303576
+  },
+  "MU": {
+   "prev_close": 690.44,
+   "open": 664.62,
+   "high": 669.0,
+   "low": 585.2526,
+   "close": 594.39,
+   "change_pct": -13.911418805399467,
+   "open_gap_pct": -3.7396442848039,
+   "afterhours_last": 610.599,
+   "afterhours_pct": 2.726997425932476
+  },
+  "TSM": {
+   "prev_close": 352.09,
+   "open": 338.25,
+   "high": 343.75,
+   "low": 318.481,
+   "close": 319.33,
+   "change_pct": -9.304439205884862,
+   "open_gap_pct": -3.930813144366485,
+   "afterhours_last": 328.6,
+   "afterhours_pct": 2.9029530579651297
+  },
+  "SOXX": {
+   "prev_close": 137.95,
+   "open": 135.07,
+   "high": 135.41,
+   "low": 122.2,
+   "close": 123.31,
+   "change_pct": -10.612540775643343,
+   "open_gap_pct": -2.0877129394708205,
+   "afterhours_last": 126.5,
+   "afterhours_pct": 2.5869759143621662
+  },
+  "QQQ": {
+   "prev_close": 645.04,
+   "open": 638.82,
+   "high": 643.28,
+   "low": 606.2293,
+   "close": 610.04,
+   "change_pct": -5.42602009177725,
+   "open_gap_pct": -0.9642812848815407,
+   "afterhours_last": 617.72,
+   "afterhours_pct": 1.2589338404039196
+  },
+  "SPY": {
+   "prev_close": 715.87,
+   "open": 713.61,
+   "high": 718.29,
+   "low": 686.75,
+   "close": 690.81,
+   "change_pct": -3.5006355902608144,
+   "open_gap_pct": -0.3156997778926307,
+   "afterhours_last": 697.49,
+   "afterhours_pct": 0.9669807906660388
+  }
+ },
+ "events_today": [],
+ "events_next": [],
+ "news": [
+  {
+   "time": "2026-11-20T21:31:30Z",
+   "symbols": [
+    "AVGO"
+   ],
+   "headline": "Alphabet Reportedly Bypassing Broadcom for HBM Procurement",
+   "summary": "Alphabet is reportedly shifting its strategy to source High Bandwidth Memory (HBM) directly from memory suppliers, bypassing Broadcom to reduce costs.",
+   "url": "https://www.moomoo.com/community/feed/breaking-news-google-bypasses-broadcom-for-hbm-pressures-memory-margins-117649382768646"
+  },
+  {
+   "time": "2026-11-20T21:01:34Z",
+   "symbols": [
+    "ASML"
+   ],
+   "headline": "ASML Faces Potential Revenue Risk from U.S. Export Policy",
+   "summary": "Analysts at Jefferies have identified that increasingly restrictive U.S. export policies, specifically under the MATCH Act, could put approximately 15% of ASML's revenue at risk.",
+   "url": "https://www.moomoo.com/news/post/1005359134/asml-tumbles-on-us-china-export-fears-market-talk"
+  },
+  {
+   "time": "2026-11-20T20:01:18Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "Compute Exchange Announces Live GPU Capacity Auction at NVIDIA GTC DC",
+   "summary": "Compute Exchange will host a live auction for NVIDIA B200 and B300 GPU capacity on December 2, 2026, during the NVIDIA GTC DC event.",
+   "url": "https://www.einnews.com/pr_news/957765130/compute-exchange-announces-live-gpu-capacity-auction-at-nvidia-gtc-dc"
+  },
+  {
+   "time": "2026-11-20T19:01:43Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Subject to Congressional Probe Regarding China Sales",
+   "summary": "NVIDIA is facing a Congressional probe concerning its ties to the U.S. Commerce Department and potential sales of its technology to China.",
+   "url": "https://www.marketscreener.com/news/nvidia-subject-to-congressional-probe-over-ties-to-commerce-department-possible-china-sales-ce785ed3d888f620"
+  },
+  {
+   "time": "2026-11-20T19:01:43Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "California Attorney General Launches Investigation into NVIDIA",
+   "summary": "California has initiated an investigation into whether NVIDIA misled investors and the public regarding the presence of its chips in China despite federal export controls.",
+   "url": "https://www.manilatimes.net/2026/11/21/business/foreign-business/california-probes-nvidia-over-china-chips-access/2475093"
+  },
+  {
+   "time": "2026-11-20T19:01:32Z",
+   "symbols": [
+    "AMD"
+   ],
+   "headline": "Law Firms Announce Securities Investigations into Advanced Micro Devices, Inc.",
+   "summary": "Multiple law firms have launched investigations into AMD following a short-seller report alleging the company continued to supply firmware to a blacklisted Chinese entity.",
+   "url": "https://www.globenewswire.com/news-release/2026/11/20/3407759/0/en/amd-investors-have-opportunity-to-join-advanced-micro-devices-inc-fraud-investigation-with-sbs-law.html"
+  },
+  {
+   "time": "2026-11-20T16:01:25Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "5C Group Joins NVIDIA Partner Network as Data Center Partner",
+   "summary": "5C Group has announced its designation as an NVIDIA Data Center Partner, focusing on the deployment of rack-scale AI infrastructure.",
+   "url": "https://www.prnewswire.com/news-releases/5c-announces-data-center-partner-designation-within-the-nvidia-partner-network-in-new-blog-302946572.html"
+  },
+  {
+   "time": "2026-11-20T14:01:58Z",
+   "symbols": [
+    "TSM"
+   ],
+   "headline": "TSMC Subsidiary Invests in Anthropic",
+   "summary": "A TSMC subsidiary has subscribed to shares in AI company Anthropic, strengthening the foundry's ties with a major customer in the artificial intelligence sector.",
+   "url": "https://www.moomoo.com/stock/TSM-US?chain_id=Name1K9-3FXPhg.1lfvvg0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A57%2C%22f%22%3A%22www.moomoo.com%2Fstock%2FSTLD-US%22%7D"
+  },
+  {
+   "time": "2026-11-20T13:01:27Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "Purpose Investments Launches Purpose Micron (MU) Yield Shares ETF",
+   "summary": "Purpose Investments has introduced a new single-stock ETF, the Purpose Micron (MU) Yield Shares ETF, designed to provide monthly income from Micron Technology stock.",
+   "url": "https://www.globenewswire.com/news-release/2026/11/20/3407363/0/en/purpose-investments-launches-purpose-anthropic-ant-yield-shares-etf-and-purpose-micron-mu-yield-shares-etf.html"
+  },
+  {
+   "time": "2026-11-20T11:32:28Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "Democrats Open Probe Into Nvidia Influence on US Megaspeed Investigation",
+   "summary": "Democratic lawmakers have initiated an investigation into NVIDIA's alleged influence regarding the US Megaspeed inquiry.",
+   "url": "https://www.fidelity.com/news/article/technology/202611200600PR_NEWS_USPR_____SF03279"
+  },
+  {
+   "time": "2026-11-20T11:32:28Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "Nvidia Eyes Inception Acquisition to Strengthen Nemotron AI Models",
+   "summary": "NVIDIA is in advanced negotiations to acquire the AI startup Inception in a deal valued at over $500 million.",
+   "url": "https://www.marketscreener.com/news/nvidia-eyes-inception-acquisition-to-strengthen-nemotron-ai-models-ce785ed3d98bf025"
+  }
+ ]
+}
