@@ -82,6 +82,14 @@
   header.page-head h1 { font-size: 24px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
   header.page-head p { margin: 0; color: var(--ink-secondary); font-size: 14px; }
   header.page-head .asof { color: var(--ink-muted); font-size: 13px; margin-top: 6px; }
+  header.page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  nav.site-nav { display: flex; gap: 4px; background: var(--chip-bg); border-radius: 8px; padding: 3px; }
+  nav.site-nav a {
+    color: var(--ink-secondary); text-decoration: none; font-size: 14px; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  nav.site-nav a[aria-current="page"] { background: var(--surface-card); color: var(--ink-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+  nav.site-nav a:focus-visible { outline: 2px solid var(--series-yeon); outline-offset: 1px; }
 
   .tiles {
     display: grid;
@@ -222,9 +230,15 @@
 <div class="wrap">
 
   <header class="page-head">
-    <h1>드롭아웃 트레이더 실적</h1>
-    <p>SOXL/SOXS 데이트레이딩 전략 — 한투 실계좌 3개(연·준·희) + LS증권 미러 계좌</p>
-    <div class="asof" id="asof"></div>
+    <div>
+      <h1>드롭아웃 트레이더 실적</h1>
+      <p>SOXL/SOXS 데이트레이딩 전략 — 한투 실계좌 3개(연·준·희) + LS증권 미러 계좌</p>
+      <div class="asof" id="asof"></div>
+    </div>
+    <nav class="site-nav" aria-label="페이지">
+      <a href="./index.html" aria-current="page">실적</a>
+      <a href="./briefing.html">브리핑</a>
+    </nav>
   </header>
 
   <section class="tiles" id="tiles"></section>
@@ -662,6 +676,7 @@ async function init() {
 const GATE_PASSWORD = '1111';
 
 function unlockDashboard() {
+  try { sessionStorage.setItem('soxl-unlocked', '1'); } catch (e) {}  // shared with briefing.html
   document.getElementById('gate').remove();
   document.querySelector('.wrap').style.display = 'block';
   init();
@@ -678,6 +693,9 @@ document.getElementById('gate-form').addEventListener('submit', e => {
     input.focus();
   }
 });
+let alreadyUnlocked = false;
+try { alreadyUnlocked = sessionStorage.getItem('soxl-unlocked') === '1'; } catch (e) {}
+if (alreadyUnlocked) unlockDashboard();
 window.addEventListener('resize', () => { if (!DATA) return; buildCompareChart(); buildLsChart(); drawBarForTab(document.querySelector('.tab-btn.active').dataset.key); });
 </script>
 </body>

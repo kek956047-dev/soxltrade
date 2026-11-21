@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>장 브리핑</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-page: #f9f9f7;
+    --surface-card: #fcfcfb;
+    --ink-primary: #0b0b0b;
+    --ink-secondary: #52514e;
+    --ink-muted: #898781;
+    --gridline: #e1e0d9;
+    --border: rgba(11,11,11,0.10);
+    --accent: #2a78d6;
+    --pos: #2a78d6;
+    --neg: #e34948;
+    --good-text: #006300;
+    --chip-bg: #f0efec;
+    --soxl: #2a78d6;
+    --soxs: #e34948;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-page: #0d0d0d;
+      --surface-card: #1a1a19;
+      --ink-primary: #f0efec;
+      --ink-secondary: #c3c2b7;
+      --ink-muted: #898781;
+      --gridline: #2c2c2a;
+      --border: rgba(255,255,255,0.10);
+      --accent: #3987e5;
+      --pos: #3987e5;
+      --neg: #e66767;
+      --good-text: #0ca30c;
+      --chip-bg: #242423;
+      --soxl: #3987e5;
+      --soxs: #e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-page: #0d0d0d;
+    --surface-card: #1a1a19;
+    --ink-primary: #f0efec;
+    --ink-secondary: #c3c2b7;
+    --ink-muted: #898781;
+    --gridline: #2c2c2a;
+    --border: rgba(255,255,255,0.10);
+    --accent: #3987e5;
+    --pos: #3987e5;
+    --neg: #e66767;
+    --good-text: #0ca30c;
+    --chip-bg: #242423;
+    --soxl: #3987e5;
+    --soxs: #e66767;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--surface-page);
+    color: var(--ink-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 24px 16px 48px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; display: none; }
+
+  header.page-head { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+  header.page-head h1 { font-size: 24px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+  header.page-head p { margin: 0; color: var(--ink-secondary); font-size: 14px; }
+  nav.site-nav { display: flex; gap: 4px; background: var(--chip-bg); border-radius: 8px; padding: 3px; }
+  nav.site-nav a {
+    color: var(--ink-secondary); text-decoration: none; font-size: 14px; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px;
+  }
+  nav.site-nav a[aria-current="page"] { background: var(--surface-card); color: var(--ink-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+  nav.site-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .hitrate { font-size: 13px; color: var(--ink-secondary); margin: 0 0 12px; font-variant-numeric: tabular-nums; }
+  .hitrate strong { color: var(--ink-primary); }
+
+  .dates { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; }
+  .date-chip {
+    appearance: none; border: 1px solid var(--border); background: var(--surface-card); color: var(--ink-secondary);
+    font-family: inherit; font-size: 13px; padding: 6px 10px; border-radius: 8px; cursor: pointer; flex: none;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 76px;
+    font-variant-numeric: tabular-nums;
+  }
+  .date-chip .d { font-weight: 700; color: var(--ink-primary); }
+  .date-chip .m { font-size: 11.5px; }
+  .date-chip[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .date-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; align-items: start; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+  }
+  .card h2 { font-size: 16px; font-weight: 700; margin: 0 0 2px; }
+  .card .card-sub { font-size: 13px; color: var(--ink-muted); margin: 0 0 16px; }
+  .empty { color: var(--ink-muted); font-size: 14px; padding: 8px 0; }
+
+  .pick { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .pick .sym { font-size: 30px; font-weight: 800; letter-spacing: -0.01em; }
+  .badge { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--chip-bg); color: var(--ink-secondary); }
+  .badge.sure { background: color-mix(in srgb, var(--good-text) 14%, transparent); color: var(--good-text); }
+  .reason { font-size: 14px; color: var(--ink-secondary); line-height: 1.55; margin: 0 0 14px; }
+  .result { font-size: 14px; font-weight: 600; margin: 0 0 14px; }
+  .result.hit { color: var(--good-text); }
+  .result.miss { color: var(--neg); }
+
+  .gaps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .gap-box { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  .gap-box .k { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+  .gap-box .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .label { font-size: 12px; font-weight: 700; color: var(--ink-muted); letter-spacing: 0.04em; margin: 16px 0 6px; }
+  .events { display: flex; gap: 6px; flex-wrap: wrap; }
+  .event { font-size: 12.5px; background: var(--chip-bg); color: var(--ink-secondary); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+
+  .explain { font-size: 15px; line-height: 1.7; white-space: pre-line; margin: 0; }
+  .explain-wait { font-size: 14px; color: var(--ink-muted); }
+
+  .table-scroll { overflow-x: auto; }
+  table.prices { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.prices th, table.prices td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.prices th:first-child, table.prices td:first-child { text-align: left; }
+  table.prices th { color: var(--ink-muted); font-weight: 600; font-size: 12px; }
+  table.prices td .nm { color: var(--ink-muted); font-size: 11.5px; margin-left: 4px; }
+  table.prices tr.lead td { font-weight: 700; }
+  .up { color: var(--pos); }
+  .down { color: var(--neg); }
+
+  ul.news { list-style: none; padding: 0; margin: 0; }
+  ul.news li { padding: 7px 0; border-bottom: 1px solid var(--gridline); font-size: 13.5px; line-height: 1.45; }
+  ul.news li:last-child { border-bottom: none; }
+  ul.news a { color: var(--ink-primary); text-decoration: none; }
+  ul.news a:hover { text-decoration: underline; }
+  ul.news .t { color: var(--ink-muted); font-size: 11.5px; margin-right: 6px; font-variant-numeric: tabular-nums; }
+
+  footer.note { font-size: 12.5px; color: var(--ink-muted); line-height: 1.6; margin-top: 20px; }
+
+  #gate { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: var(--surface-page); }
+  #gate .box { width: 100%; max-width: 320px; margin: 0 16px; background: var(--surface-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 24px; text-align: center; }
+  #gate h2 { font-size: 16px; font-weight: 700; margin: 0 0 16px; }
+  #gate input { width: 100%; font-size: 20px; letter-spacing: 0.3em; text-align: center; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-page); color: var(--ink-primary); }
+  #gate input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  #gate button { width: 100%; margin-top: 10px; padding: 10px 12px; border-radius: 8px; border: none; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+  #gate .err { color: var(--neg); font-size: 13px; margin-top: 8px; min-height: 16px; }
+</style>
+</head>
+<body>
+<div id="gate">
+  <form class="box" id="gate-form">
+    <h2>비밀번호를 입력하세요</h2>
+    <input type="password" id="gate-input" inputmode="numeric" autocomplete="off" autofocus>
+    <button type="submit">확인</button>
+    <div class="err" id="gate-err"></div>
+  </form>
+</div>
+<div class="wrap">
+  <header class="page-head">
+    <div>
+      <h1>장 브리핑</h1>
+      <p>장 시작 5분 전 매수 예측과 장 마감 후 정리 · 날짜는 미국 동부시간 기준</p>
+    </div>
+    <nav class="site-nav" aria-label="페이지">
+      <a href="./index.html">실적</a>
+      <a href="./briefing.html" aria-current="page">브리핑</a>
+    </nav>
+  </header>
+
+  <p class="hitrate" id="hitrate"></p>
+  <div class="dates" id="dates" role="group" aria-label="날짜 선택"></div>
+
+  <div class="grid">
+    <section class="card" id="card-pre">
+      <h2>장전 예측</h2>
+      <p class="card-sub">09:25 ET, 프리장 가격 기준</p>
+      <div id="pre-body"></div>
+    </section>
+    <section class="card" id="card-close">
+      <h2>장 마감 정리</h2>
+      <p class="card-sub">애프터장 마감(20:00 ET) 후</p>
+      <div id="close-body"></div>
+    </section>
+  </div>
+
+  <footer class="note">
+    <p>예측은 프리장 갭으로 봇의 09:35 선택을 추정합니다. 2022~2026년 재현 결과 갭 3% 이상이면 73%, 미만이면 51% 일치했습니다. "실제 매수"는 연 계좌 봇이 실제로 낸 매수입니다.</p>
+    <p>장 마감 해석은 Claude가 그날 뉴스와 가격을 바탕으로 작성합니다. 원인을 단정하지 않으며 투자 조언이 아닙니다.</p>
+  </footer>
+</div>
+
+<script>
+const NAMES = { SOXL: '반도체 3배', SOXS: '반도체 인버스 3배', NVDA: '엔비디아', AMD: 'AMD', AVGO: '브로드컴', MU: '마이크론', TSM: 'TSMC', SOXX: '반도체 ETF', QQQ: '나스닥100', SPY: 'S&P500' };
+const ORDER = ['SOXL', 'SOXS', 'NVDA', 'AMD', 'AVGO', 'MU', 'TSM', 'SOXX', 'QQQ', 'SPY'];
+const WEEKDAY_KO = ['일', '월', '화', '수', '목', '금', '토'];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pct = n => n == null ? '–' : (n > 0 ? '+' : '') + n.toFixed(1) + '%';
+const cls = n => n == null ? '' : n > 0 ? 'up' : n < 0 ? 'down' : '';
+const price = n => n == null ? '–' : n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const weekday = d => WEEKDAY_KO[new Date(d + 'T00:00:00Z').getUTCDay()];
+const symColor = s => s === 'SOXL' ? 'var(--soxl)' : s === 'SOXS' ? 'var(--soxs)' : 'inherit';
+const etTime = iso => new Date(iso).toLocaleString('ko-KR', { timeZone: 'America/New_York', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+
+let DAYS = [];
+
+async function getJSON(path) {
+  const res = await fetch(path, { cache: 'no-store' });
+  if (!res.ok) return null;
+  return res.json();
+}
+async function getText(path) {
+  const res = await fetch(path, { cache: 'no-store' });
+  return res.ok ? res.text() : null;
+}
+
+function renderHitrate() {
+  const scored = DAYS.filter(d => d.predicted && d.actual);
+  const el = document.getElementById('hitrate');
+  if (!scored.length) { el.textContent = '예측 적중률은 장전 예측과 실제 매수가 함께 쌓이면 표시됩니다.'; return; }
+  const hits = scored.filter(d => d.predicted === d.actual).length;
+  const sure = scored.filter(d => d.confident);
+  const sureHits = sure.filter(d => d.predicted === d.actual).length;
+  el.innerHTML = `예측 적중 <strong>${hits}/${scored.length}</strong> (${Math.round(hits / scored.length * 100)}%)` +
+    (sure.length ? ` · 가능성 높음 ${sureHits}/${sure.length} · 불확실 ${hits - sureHits}/${scored.length - sure.length}` : '');
+}
+
+function renderDates(selected) {
+  document.getElementById('dates').innerHTML = DAYS.map(d => {
+    const [, m, day] = d.date.split('-');
+    const meta = d.soxl_pct != null ? `SOXL <span class="${cls(d.soxl_pct)}">${pct(d.soxl_pct)}</span>` : '집계 전';
+    return `<button class="date-chip" data-date="${d.date}" aria-pressed="${d.date === selected}">
+      <span class="d">${+m}/${+day} (${weekday(d.date)})</span><span class="m">${meta}</span></button>`;
+  }).join('');
+}
+
+function newsList(items, limit) {
+  if (!items || !items.length) return '<p class="empty">뉴스 없음</p>';
+  return '<ul class="news">' + items.slice(0, limit).map(n =>
+    `<li><span class="t">${esc(etTime(n.time))}</span>${n.url ? `<a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a>` : esc(n.headline)}</li>`
+  ).join('') + '</ul>';
+}
+
+function eventChips(list, none) {
+  return list && list.length ? '<div class="events">' + list.map(e => `<span class="event">${esc(e)}</span>`).join('') + '</div>' : `<p class="empty">${none}</p>`;
+}
+
+function renderPre(pre, actual) {
+  const el = document.getElementById('pre-body');
+  if (!pre) { el.innerHTML = '<p class="empty">이 날은 장전 예측 기록이 없습니다.</p>'; return; }
+  const p = pre.prediction;
+  const result = actual
+    ? (actual === p.symbol ? `<p class="result hit">실제 매수 ${esc(actual)} · 적중</p>` : `<p class="result miss">실제 매수 ${esc(actual)} · 빗나감</p>`)
+    : '<p class="result" style="color:var(--ink-muted)">실제 매수는 장 마감 집계 후 표시</p>';
+  el.innerHTML = `
+    <div class="pick"><span class="sym" style="color:${symColor(p.symbol)}">${esc(p.symbol)}</span>
+      <span class="badge${p.confident ? ' sure' : ''}">${p.confident ? '가능성 높음' : '불확실'}</span></div>
+    <p class="reason">${esc(p.reason)}</p>
+    ${result}
+    <div class="gaps">${['SOXL', 'SOXS'].map(s => `<div class="gap-box"><div class="k">${s} 프리장</div>
+      <div class="v ${cls(p.gaps[s])}">${pct(p.gaps[s])}</div>
+      <div class="k">${price(pre.premarket?.[s])} · 전일 ${price(pre.prev_close?.[s])}</div></div>`).join('')}</div>
+    <div class="label">오늘 일정 (ET)</div>${eventChips(pre.events, '주요 지표 없음')}
+    <div class="label">밤사이 뉴스</div>${newsList(pre.news, 6)}`;
+}
+
+function renderClose(data, md) {
+  const el = document.getElementById('close-body');
+  if (!data) { el.innerHTML = '<p class="empty">장 마감 정리는 애프터장이 끝난 뒤(20:10 ET) 올라옵니다.</p>'; return; }
+  const rows = ORDER.filter(s => data.prices[s]).map(s => {
+    const x = data.prices[s];
+    return `<tr class="${s === 'SOXL' || s === 'SOXS' ? 'lead' : ''}"><td>${s}<span class="nm">${NAMES[s]}</span></td>
+      <td>${price(x.prev_close)}</td><td>${price(x.close)}</td><td class="${cls(x.change_pct)}">${pct(x.change_pct)}</td>
+      <td class="${cls(x.open_gap_pct)}">${pct(x.open_gap_pct)}</td><td class="${cls(x.afterhours_pct)}">${pct(x.afterhours_pct)}</td></tr>`;
+  }).join('');
+  el.innerHTML = `
+    ${md ? `<p class="explain">${esc(md.trim())}</p>` : '<p class="explain-wait">해석을 작성 중이거나 이 날은 해석이 없습니다.</p>'}
+    <div class="label">종목별 등락</div>
+    <div class="table-scroll"><table class="prices"><thead><tr><th>종목</th><th>전일 종가</th><th>종가</th><th>등락</th><th>시가 갭</th><th>애프터</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+    <div class="label">다음 거래일 일정 (ET)</div>${eventChips(data.events_next, '주요 지표 없음')}
+    <div class="label">그날 뉴스</div>${newsList(data.news, 10)}`;
+}
+
+async function show(date) {
+  renderDates(date);
+  history.replaceState(null, '', '#' + date);
+  const [pre, data, md] = await Promise.all([
+    getJSON(`./briefing/premarket/${date}.json`), getJSON(`./briefing/data/${date}.json`), getText(`./briefing/${date}.md`),
+  ]);
+  renderPre(pre, data?.bot_pick);
+  renderClose(data, md);
+}
+
+async function init() {
+  const index = await getJSON('./briefing/index.json');
+  DAYS = index?.days || [];
+  if (!DAYS.length) {
+    document.getElementById('pre-body').innerHTML = '<p class="empty">아직 기록이 없습니다.</p>';
+    document.getElementById('close-body').innerHTML = '';
+    return;
+  }
+  renderHitrate();
+  document.getElementById('dates').addEventListener('click', e => {
+    const chip = e.target.closest('.date-chip');
+    if (chip) show(chip.dataset.date);
+  });
+  const fromHash = location.hash.slice(1);
+  show(DAYS.some(d => d.date === fromHash) ? fromHash : DAYS[0].date);
+}
+
+const GATE_PASSWORD = '1111';
+function unlock() {
+  try { sessionStorage.setItem('soxl-unlocked', '1'); } catch (e) {}
+  document.getElementById('gate').remove();
+  document.querySelector('.wrap').style.display = 'block';
+  init();
+}
+document.getElementById('gate-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = document.getElementById('gate-input');
+  if (input.value === GATE_PASSWORD) unlock();
+  else { document.getElementById('gate-err').textContent = '비밀번호가 올바르지 않습니다'; input.value = ''; input.focus(); }
+});
+let alreadyUnlocked = false;
+try { alreadyUnlocked = sessionStorage.getItem('soxl-unlocked') === '1'; } catch (e) {}
+if (alreadyUnlocked) unlock();
+</script>
+</body>
+</html>
