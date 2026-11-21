@@ -145,6 +145,17 @@
   ul.news .t { color: var(--ink-muted); font-size: 11.5px; margin-right: 6px; font-variant-numeric: tabular-nums; }
   ul.news .orig { display: block; color: var(--ink-muted); font-size: 11.5px; margin-top: 2px; }
 
+  .field-label { display: block; font-size: 12px; color: var(--ink-muted); margin: 6px 0 4px; }
+  #gpt-box textarea, #gpt-box input {
+    width: 100%; font: inherit; font-size: 13.5px; padding: 8px 10px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--surface-page); color: var(--ink-primary); resize: vertical;
+  }
+  #gpt-box textarea:focus, #gpt-box input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .form-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .save-btn { padding: 7px 16px; border-radius: 8px; border: none; background: var(--accent); color: #fff; font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+  .save-btn:focus-visible, .link-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .form-msg { font-size: 12.5px; color: var(--ink-secondary); }
+  .link-btn { appearance: none; border: none; background: none; padding: 0; color: var(--accent); font: inherit; font-size: 12.5px; cursor: pointer; margin-bottom: 12px; }
   footer.note { font-size: 12.5px; color: var(--ink-muted); line-height: 1.6; margin-top: 20px; }
 
   #gate { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: var(--surface-page); }
@@ -232,7 +243,7 @@ function renderHitrate() {
   };
   const held = DAYS.filter(d => d.actual && !d.predicted).length;
   el.innerHTML = `규칙 예측 적중 ${score(d => d.predicted)}` + (held ? ` · 판단 보류 ${held}일` : '') +
-    ` &nbsp;|&nbsp; AI 의견 적중 ${score(d => d.ai_lean)}`;
+    ` &nbsp;|&nbsp; Claude 의견 적중 ${score(d => d.ai_lean)} &nbsp;|&nbsp; GPT 의견 적중 ${score(d => d.gpt_lean)}`;
 }
 
 function renderDates(selected) {
@@ -279,9 +290,11 @@ function renderPre(pre, actual, opinion) {
     <div class="pick"><span class="sym" style="color:${symColor(p.symbol)}">${esc(p.symbol || '판단 보류')}</span>
       ${p.hit_rate ? `<span class="badge${p.confident ? ' sure' : ''}">과거 ${p.hit_rate}% 일치</span>` : ''}${verdict(p.symbol, actual)}</div>
     <p class="reason">${esc(p.reason)}</p>
-    <div class="label">AI 참고 의견 (뉴스·지표 종합)</div>
+    <div class="label">Claude 의견 (뉴스·지표 종합)</div>
     ${opinion ? `<div class="pick"><span class="sym small" style="color:${symColor(opinion.lean)}">${esc(LEAN[opinion.lean] || '판단 보류')}</span>${verdict(opinion.lean, actual)}</div>
-      <p class="reason">${esc(opinion.text)}</p>` : '<p class="empty">이 날은 AI 의견이 없습니다.</p>'}
+      <p class="reason">${esc(opinion.text)}</p>` : '<p class="empty">이 날은 Claude 의견이 없습니다.</p>'}
+    <div class="label">GPT 의견</div>
+    <div id="gpt-box"></div>
     <p class="result ${actual ? '' : 'pending'}">${actual ? `실제 매수: <span style="color:${symColor(actual)}">${esc(actual)}</span>` : '실제 매수는 장 마감 집계 후 표시'}</p>
     <div class="gaps">${['SOXL', 'SOXS'].map(s => `<div class="gap-box"><div class="k">${s} 프리장</div>
       <div class="v ${cls(p.gaps[s])}">${pct(p.gaps[s])}</div>
@@ -310,15 +323,86 @@ function renderClose(data, md) {
     <div class="label">그날 뉴스</div>${newsList(data.news, 10)}`;
 }
 
+// --- GPT opinion: pasted on the page, saved to briefing/gpt/<date>.json through the GitHub API.
+// The token (fine-grained, this repo only, Contents read/write) stays in this browser's localStorage.
+const REPO_API = 'https://api.github.com/repos/kek956047-dev/soxltrade/contents/';
+const TOKEN_KEY = 'soxl-gh-token';
+const getToken = () => { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; } };
+const setToken = t => { try { localStorage.setItem(TOKEN_KEY, t); } catch (e) {} };
+
+function parseGpt(text) {
+  const opinionLine = (text.match(/의견\s*[:：]\s*(.+)/) || [])[1] || '';
+  const lean = /SOXL/i.test(opinionLine) ? 'SOXL' : /SOXS/i.test(opinionLine) ? 'SOXS' : /보류|HOLD/i.test(opinionLine) ? 'HOLD' : null;
+  const reason = ((text.match(/근거\s*[:：]\s*([\s\S]+)/) || [])[1] || '').trim();
+  return lean ? { lean, text: reason } : null;
+}
+
+const b64 = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+
+async function saveGpt(date, record) {
+  const token = getToken();
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
+  const url = `${REPO_API}briefing/gpt/${date}.json`;
+  const existing = await fetch(url + '?ref=main', { headers });
+  const sha = existing.ok ? (await existing.json()).sha : undefined;
+  const res = await fetch(url, {
+    method: 'PUT', headers,
+    body: JSON.stringify({ message: `briefing gpt ${date}`, content: b64(JSON.stringify(record, null, 1)), branch: 'main', ...(sha ? { sha } : {}) }),
+  });
+  if (!res.ok) throw new Error(`${res.status} ${(await res.json().catch(() => ({}))).message || ''}`);
+}
+
+function renderGpt(date, gpt, actual) {
+  const box = document.getElementById('gpt-box');
+  if (!box) return;
+  if (gpt) {
+    box.innerHTML = `<div class="pick"><span class="sym small" style="color:${symColor(gpt.lean)}">${esc(LEAN[gpt.lean])}</span>${verdict(gpt.lean, actual)}</div>
+      <p class="reason">${esc(gpt.text)}</p><button class="link-btn" id="gpt-edit">고치기</button>`;
+    document.getElementById('gpt-edit').onclick = () => renderGptForm(date, gpt, actual);
+    return;
+  }
+  renderGptForm(date, null, actual);
+}
+
+function renderGptForm(date, current, actual) {
+  const box = document.getElementById('gpt-box');
+  const needToken = !getToken();
+  box.innerHTML = `
+    <label class="field-label" for="gpt-text">GPT 답변 붙여넣기 ("의견:"과 "근거:" 줄 포함)</label>
+    <textarea id="gpt-text" rows="3" placeholder="의견: 판단 보류&#10;근거: ...">${current ? esc(`의견: ${LEAN[current.lean]}\n근거: ${current.text}`) : ''}</textarea>
+    ${needToken ? `<label class="field-label" for="gpt-token">GitHub 토큰 (처음 한 번만, 이 기기에만 저장)</label>
+      <input id="gpt-token" type="password" autocomplete="off" placeholder="github_pat_...">` : ''}
+    <div class="form-row"><button class="save-btn" id="gpt-save">저장</button><span class="form-msg" id="gpt-msg"></span></div>`;
+  document.getElementById('gpt-save').onclick = async () => {
+    const msg = document.getElementById('gpt-msg');
+    const tokenInput = document.getElementById('gpt-token');
+    if (tokenInput && tokenInput.value.trim()) setToken(tokenInput.value.trim());
+    if (!getToken()) { msg.textContent = 'GitHub 토큰을 입력하세요.'; return; }
+    const parsed = parseGpt(document.getElementById('gpt-text').value);
+    if (!parsed) { msg.textContent = '"의견: SOXL 우세 / SOXS 우세 / 판단 보류" 줄을 찾지 못했습니다.'; return; }
+    msg.textContent = '저장 중…';
+    try {
+      await saveGpt(date, { date, ...parsed, saved_at: new Date().toISOString() });
+      renderGpt(date, parsed, actual);
+      const row = DAYS.find(d => d.date === date);
+      if (row) { row.gpt_lean = parsed.lean; renderHitrate(); }
+    } catch (err) {
+      if (/401|403/.test(err.message)) setToken('');
+      msg.textContent = `저장하지 못했습니다 (${err.message}). 토큰 권한(이 저장소의 Contents 쓰기)을 확인하세요.`;
+    }
+  };
+}
+
 async function show(date) {
   renderDates(date);
   history.replaceState(null, '', '#' + date);
-  const [pre, data, md, ko] = await Promise.all([
+  const [pre, data, md, ko, gpt] = await Promise.all([
     getJSON(`./briefing/premarket/${date}.json`), getJSON(`./briefing/data/${date}.json`), getText(`./briefing/${date}.md`),
-    getJSON(`./briefing/ko/${date}.json`),
+    getJSON(`./briefing/ko/${date}.json`), getJSON(`./briefing/gpt/${date}.json`),
   ]);
   KO = ko?.headlines || {};
   renderPre(pre, data?.bot_pick, ko?.opinion);
+  if (pre) renderGpt(date, gpt, data?.bot_pick);
   renderClose(data, md);
 }
 
