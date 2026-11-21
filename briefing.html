@@ -110,9 +110,10 @@
   .badge { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--chip-bg); color: var(--ink-secondary); }
   .badge.sure { background: color-mix(in srgb, var(--good-text) 14%, transparent); color: var(--good-text); }
   .reason { font-size: 14px; color: var(--ink-secondary); line-height: 1.55; margin: 0 0 14px; }
-  .result { font-size: 14px; font-weight: 600; margin: 0 0 14px; }
-  .result.hit { color: var(--good-text); }
-  .result.miss { color: var(--neg); }
+  .pick .sym.small { font-size: 20px; }
+  .badge.miss { background: color-mix(in srgb, var(--neg) 14%, transparent); color: var(--neg); }
+  .result { font-size: 14px; font-weight: 600; margin: 4px 0 14px; padding-top: 10px; border-top: 1px solid var(--gridline); }
+  .result.pending { color: var(--ink-muted); font-weight: 500; }
 
   .gaps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
   .gap-box { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
@@ -193,7 +194,7 @@
   </div>
 
   <footer class="note">
-    <p>예측은 프리장 갭으로 봇의 09:35 선택을 추정합니다. 2022~2026년 재현 결과 갭 3% 이상이면 73%, 미만이면 51% 일치했습니다. "실제 매수"는 연 계좌 봇이 실제로 낸 매수입니다.</p>
+    <p>규칙 예측은 09:25 프리장 갭으로 봇의 09:35 선택을 추정합니다. 2022~2026년 재현 결과 갭 5% 이상 81%, 3~5% 64% 일치했고, 3% 미만은 51%로 미리 알 수 없어 판단을 보류합니다(엔비디아·AMD·TSMC·나스닥 프리장 방향도 48~53%로 도움이 되지 않았습니다). AI 참고 의견은 뉴스와 지표 일정을 종합한 판단이며, 실제로 도움이 되는지 위 적중률로 따로 확인합니다. "실제 매수"는 연 계좌 봇이 실제로 낸 매수입니다.</p>
     <p>장 마감 해석과 뉴스 제목 번역은 Claude가 작성합니다. 원인을 단정하지 않으며 투자 조언이 아닙니다. 번역 아래 작은 글씨가 영어 원문입니다.</p>
   </footer>
 </div>
@@ -223,14 +224,15 @@ async function getText(path) {
 }
 
 function renderHitrate() {
-  const scored = DAYS.filter(d => d.predicted && d.actual);
   const el = document.getElementById('hitrate');
-  if (!scored.length) { el.textContent = '예측 적중률은 장전 예측과 실제 매수가 함께 쌓이면 표시됩니다.'; return; }
-  const hits = scored.filter(d => d.predicted === d.actual).length;
-  const sure = scored.filter(d => d.confident);
-  const sureHits = sure.filter(d => d.predicted === d.actual).length;
-  el.innerHTML = `예측 적중 <strong>${hits}/${scored.length}</strong> (${Math.round(hits / scored.length * 100)}%)` +
-    (sure.length ? ` · 가능성 높음 ${sureHits}/${sure.length} · 불확실 ${hits - sureHits}/${scored.length - sure.length}` : '');
+  const score = (pick) => {
+    const days = DAYS.filter(d => pick(d) && pick(d) !== 'HOLD' && d.actual);
+    const hits = days.filter(d => pick(d) === d.actual).length;
+    return days.length ? `<strong>${hits}/${days.length}</strong> (${Math.round(hits / days.length * 100)}%)` : '기록 쌓이는 중';
+  };
+  const held = DAYS.filter(d => d.actual && !d.predicted).length;
+  el.innerHTML = `규칙 예측 적중 ${score(d => d.predicted)}` + (held ? ` · 판단 보류 ${held}일` : '') +
+    ` &nbsp;|&nbsp; AI 의견 적중 ${score(d => d.ai_lean)}`;
 }
 
 function renderDates(selected) {
@@ -258,21 +260,34 @@ function eventChips(list, none) {
   return list && list.length ? '<div class="events">' + list.map(e => `<span class="event">${esc(e)}</span>`).join('') + '</div>' : `<p class="empty">${none}</p>`;
 }
 
-function renderPre(pre, actual) {
+const LEAN = { SOXL: 'SOXL 우세', SOXS: 'SOXS 우세', HOLD: '판단 보류' };
+const CONTEXT = { NVDA: '엔비디아', AMD: 'AMD', TSM: 'TSMC', QQQ: '나스닥' };
+
+function verdict(call, actual) {
+  if (!call || call === 'HOLD') return '';
+  if (!actual) return '';
+  return call === actual ? '<span class="badge sure">적중</span>' : '<span class="badge miss">빗나감</span>';
+}
+
+function renderPre(pre, actual, opinion) {
   const el = document.getElementById('pre-body');
   if (!pre) { el.innerHTML = '<p class="empty">이 날은 장전 예측 기록이 없습니다.</p>'; return; }
   const p = pre.prediction;
-  const result = actual
-    ? (actual === p.symbol ? `<p class="result hit">실제 매수 ${esc(actual)} · 적중</p>` : `<p class="result miss">실제 매수 ${esc(actual)} · 빗나감</p>`)
-    : '<p class="result" style="color:var(--ink-muted)">실제 매수는 장 마감 집계 후 표시</p>';
+  const ctx = pre.context || {};
   el.innerHTML = `
-    <div class="pick"><span class="sym" style="color:${symColor(p.symbol)}">${esc(p.symbol)}</span>
-      <span class="badge${p.confident ? ' sure' : ''}">${p.confident ? '가능성 높음' : '불확실'}</span></div>
+    <div class="label" style="margin-top:0">규칙 예측 (프리장 갭)</div>
+    <div class="pick"><span class="sym" style="color:${symColor(p.symbol)}">${esc(p.symbol || '판단 보류')}</span>
+      ${p.hit_rate ? `<span class="badge${p.confident ? ' sure' : ''}">과거 ${p.hit_rate}% 일치</span>` : ''}${verdict(p.symbol, actual)}</div>
     <p class="reason">${esc(p.reason)}</p>
-    ${result}
+    <div class="label">AI 참고 의견 (뉴스·지표 종합)</div>
+    ${opinion ? `<div class="pick"><span class="sym small" style="color:${symColor(opinion.lean)}">${esc(LEAN[opinion.lean] || '판단 보류')}</span>${verdict(opinion.lean, actual)}</div>
+      <p class="reason">${esc(opinion.text)}</p>` : '<p class="empty">이 날은 AI 의견이 없습니다.</p>'}
+    <p class="result ${actual ? '' : 'pending'}">${actual ? `실제 매수: <span style="color:${symColor(actual)}">${esc(actual)}</span>` : '실제 매수는 장 마감 집계 후 표시'}</p>
     <div class="gaps">${['SOXL', 'SOXS'].map(s => `<div class="gap-box"><div class="k">${s} 프리장</div>
       <div class="v ${cls(p.gaps[s])}">${pct(p.gaps[s])}</div>
       <div class="k">${price(pre.premarket?.[s])} · 전일 ${price(pre.prev_close?.[s])}</div></div>`).join('')}</div>
+    ${Object.keys(ctx).length ? `<div class="label">프리장 주요 종목</div><div class="events">${Object.keys(CONTEXT).filter(s => s in ctx)
+      .map(s => `<span class="event">${CONTEXT[s]} <span class="${cls(ctx[s])}">${pct(ctx[s])}</span></span>`).join('')}</div>` : ''}
     <div class="label">오늘 일정 (ET)</div>${eventChips(pre.events, '주요 지표 없음')}
     <div class="label">밤사이 뉴스</div>${newsList(pre.news, 6)}`;
 }
@@ -303,7 +318,7 @@ async function show(date) {
     getJSON(`./briefing/ko/${date}.json`),
   ]);
   KO = ko?.headlines || {};
-  renderPre(pre, data?.bot_pick);
+  renderPre(pre, data?.bot_pick, ko?.opinion);
   renderClose(data, md);
 }
 
