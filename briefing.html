@@ -142,6 +142,7 @@
   ul.news a { color: var(--ink-primary); text-decoration: none; }
   ul.news a:hover { text-decoration: underline; }
   ul.news .t { color: var(--ink-muted); font-size: 11.5px; margin-right: 6px; font-variant-numeric: tabular-nums; }
+  ul.news .orig { display: block; color: var(--ink-muted); font-size: 11.5px; margin-top: 2px; }
 
   footer.note { font-size: 12.5px; color: var(--ink-muted); line-height: 1.6; margin-top: 20px; }
 
@@ -193,7 +194,7 @@
 
   <footer class="note">
     <p>예측은 프리장 갭으로 봇의 09:35 선택을 추정합니다. 2022~2026년 재현 결과 갭 3% 이상이면 73%, 미만이면 51% 일치했습니다. "실제 매수"는 연 계좌 봇이 실제로 낸 매수입니다.</p>
-    <p>장 마감 해석은 Claude가 그날 뉴스와 가격을 바탕으로 작성합니다. 원인을 단정하지 않으며 투자 조언이 아닙니다.</p>
+    <p>장 마감 해석과 뉴스 제목 번역은 Claude가 작성합니다. 원인을 단정하지 않으며 투자 조언이 아닙니다. 번역 아래 작은 글씨가 영어 원문입니다.</p>
   </footer>
 </div>
 
@@ -241,11 +242,16 @@ function renderDates(selected) {
   }).join('');
 }
 
+let KO = {};  // English headline -> Korean, from briefing/ko/<date>.json
+
 function newsList(items, limit) {
   if (!items || !items.length) return '<p class="empty">뉴스 없음</p>';
-  return '<ul class="news">' + items.slice(0, limit).map(n =>
-    `<li><span class="t">${esc(etTime(n.time))}</span>${n.url ? `<a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a>` : esc(n.headline)}</li>`
-  ).join('') + '</ul>';
+  return '<ul class="news">' + items.slice(0, limit).map(n => {
+    const ko = KO[n.headline];
+    const title = esc(ko || n.headline);
+    return `<li><span class="t">${esc(etTime(n.time))}</span>${n.url ? `<a href="${esc(n.url)}" target="_blank" rel="noopener">${title}</a>` : title}` +
+      (ko ? `<span class="orig">${esc(n.headline)}</span>` : '') + '</li>';
+  }).join('') + '</ul>';
 }
 
 function eventChips(list, none) {
@@ -292,9 +298,11 @@ function renderClose(data, md) {
 async function show(date) {
   renderDates(date);
   history.replaceState(null, '', '#' + date);
-  const [pre, data, md] = await Promise.all([
+  const [pre, data, md, ko] = await Promise.all([
     getJSON(`./briefing/premarket/${date}.json`), getJSON(`./briefing/data/${date}.json`), getText(`./briefing/${date}.md`),
+    getJSON(`./briefing/ko/${date}.json`),
   ]);
+  KO = ko?.headlines || {};
   renderPre(pre, data?.bot_pick);
   renderClose(data, md);
 }
