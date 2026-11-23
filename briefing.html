@@ -244,6 +244,12 @@ function renderHitrate() {
   const held = DAYS.filter(d => d.actual && !d.predicted).length;
   el.innerHTML = `규칙 예측 적중 ${score(d => d.predicted)}` + (held ? ` · 판단 보류 ${held}일` : '') +
     ` &nbsp;|&nbsp; Claude 의견 적중 ${score(d => d.ai_lean)} &nbsp;|&nbsp; GPT 의견 적중 ${score(d => d.gpt_lean)}`;
+  // stop risk: how often each source's "높음" vs "낮음" days really stopped out
+  const riskScore = (key) => {
+    const part = lv => { const ds = DAYS.filter(d => d[key] === lv && d.stopped != null); return ds.length ? `${lv} ${ds.filter(d => d.stopped).length}/${ds.length}` : null; };
+    return ['높음', '보통', '낮음'].map(part).filter(Boolean).join(' · ') || '기록 쌓이는 중';
+  };
+  el.innerHTML += `<br>손절 위험 판단 → 실제 손절 (위험 등급별 손절 일수/전체): 통계 ${riskScore('risk_stat')} &nbsp;|&nbsp; Claude ${riskScore('risk_ai')} &nbsp;|&nbsp; GPT ${riskScore('risk_gpt')}`;
 }
 
 function renderDates(selected) {
@@ -280,7 +286,18 @@ function verdict(call, actual) {
   return call === actual ? '<span class="badge sure">적중</span>' : '<span class="badge miss">빗나감</span>';
 }
 
-function renderPre(pre, actual, opinion) {
+function riskBlock(pre, aiRisk, stopped) {
+  const r = pre.stop_risk;
+  if (!r && !aiRisk) return '';
+  const outcome = stopped == null ? '<span class="result pending" style="border:none;padding:0">실제 결과는 장 마감 집계 후 표시</span>'
+    : stopped ? '<span class="badge miss">실제 손절됨</span>' : '<span class="badge sure">손절 안 됨</span>';
+  return `<div class="label">-6% 손절 위험${r ? ` (${esc(r.symbol)} 매수 시)` : ''}</div>
+    ${r ? `<p class="reason">통계: <strong>${esc(r.level)}</strong> (과거 약 ${r.observed_pct}%) · 최근 5일 변동폭 ${r.vol5}%, 전날 ${r.prev_move}%, 갭 ${r.gap_abs}%</p>` : ''}
+    ${aiRisk ? `<p class="reason">Claude: <strong>${esc(aiRisk.level)}</strong> ${esc(aiRisk.text || '')}</p>` : ''}
+    <div style="margin:-6px 0 12px">${outcome}</div>`;
+}
+
+function renderPre(pre, actual, opinion, aiRisk, stopped) {
   const el = document.getElementById('pre-body');
   if (!pre) { el.innerHTML = '<p class="empty">이 날은 장전 예측 기록이 없습니다.</p>'; return; }
   const p = pre.prediction;
@@ -297,6 +314,7 @@ function renderPre(pre, actual, opinion) {
     <div class="form-row" style="margin:0 0 8px"><button class="save-btn" id="gpt-copy">GPT 질문 복사</button>
       <span class="form-msg" id="gpt-copy-msg">데이터가 들어간 질문을 복사해 ChatGPT에 붙여넣으세요</span></div>
     <div id="gpt-box"></div>
+    ${riskBlock(pre, aiRisk, stopped)}
     <p class="result ${actual ? '' : 'pending'}">${actual ? `실제 매수: <span style="color:${symColor(actual)}">${esc(actual)}</span>` : '실제 매수는 장 마감 집계 후 표시'}</p>
     <div class="gaps">${['SOXL', 'SOXS'].map(s => `<div class="gap-box"><div class="k">${s} 프리장</div>
       <div class="v ${cls(p.gaps[s])}">${pct(p.gaps[s])}</div>
@@ -334,11 +352,12 @@ function gptPrompt(pre) {
     ...['SOXL', 'SOXS'].map(s => `${s}: 프리장 ${pre.premarket?.[s]} / 전일 종가 ${pre.prev_close?.[s]} (${pct(g[s])})`),
     '다른 종목 프리장: ' + Object.entries(pre.context || {}).map(([s, v]) => `${s} ${pct(v)}`).join(', '),
     `규칙 예측: ${p.symbol || '판단 보류'} - ${p.reason}`,
+    ...(pre.stop_risk ? [`-6% 손절 위험 통계 기준선 (${pre.stop_risk.symbol} 매수 시): ${pre.stop_risk.level} (과거 약 ${pre.stop_risk.observed_pct}%), 최근 5일 SOXL 평균 변동폭 ${pre.stop_risk.vol5}%, 전날 SOXL 등락 ${pre.stop_risk.prev_move}%, 갭 ${pre.stop_risk.gap_abs}%`] : []),
     '오늘 일정(ET): ' + ((pre.events || []).join(', ') || '없음'),
     '밤사이 뉴스(최신순):',
     ...(pre.news || []).map(n => `- ${n.headline}${n.summary ? `\n  ${n.summary.trim()}` : ''}`),
   ].join('\n');
-  return `아래 [데이터]를 보고, 오늘 자동매매 봇이 09:35(미국 동부시간)에 어느 종목을 살지 의견을 줘.
+  return `아래 [데이터]를 보고, 오늘 자동매매 봇이 09:35(미국 동부시간)에 어느 종목을 살지, 그리고 산 뒤 -6% 손절이 날 위험이 얼마나 되는지 의견을 줘.
 
 [봇의 매수 규칙]
 SOXL은 반도체 3배 레버리지, SOXS는 반도체 인버스 3배 ETF다.
@@ -351,14 +370,24 @@ SOXL은 반도체 3배 레버리지, SOXS는 반도체 인버스 3배 ETF다.
 - 3% 미만: 약 51% (동전 던지기 수준)
 - 갭이 3% 미만인 날, 엔비디아·AMD·TSMC·나스닥 프리장 방향으로 맞혀 봐도 48~53%로 도움이 안 됐다.
 
+[-6% 손절 규칙과 과거 통계]
+09:35에 산 종목이 15:58 전에 매수가보다 6% 떨어지면 전량 손절한다. 2022~2026년 1,064일 중 18%가 손절됐다.
+- 최근 5일 SOXL 평균 장중 변동폭 6% 미만이면 약 11%, 9% 초과면 약 27%
+- 전날 SOXL이 12% 넘게 움직였으면 33%
+- 산 종목의 갭이 6% 이상이면 약 24%
+- CPI·고용지표·FOMC 발표일 23%
+- SOXS를 살 때 21%, SOXL 16%
+데이터의 "통계 기준선"은 이 숫자들을 합친 것이다(낮음/보통/높음 = 과거 약 10/17/27%). 숫자가 못 보는 것으로 조정해: 하나의 새 뉴스로 생긴 갭이라 장중에 뒤집히거나 해명될 수 있으면, 장중에 지표·실적·연준 발언이 예정돼 있으면, 뉴스가 엇갈리거나 진행 중이면 위험을 올리고, 이미 소화된 차분한 상황이면 내려. 구체적 근거가 없으면 기준선을 유지해.
+
 [판단 기준]
 - 장 시작 직후 몇 분의 움직임에 영향을 줄 "구체적인 근거"가 데이터 안에 있을 때만 한쪽을 골라. 예: 08:30에 이미 나온 CPI·고용지표 결과, 큰 반도체 실적이나 수출규제 뉴스.
 - 근거가 없으면 판단 보류라고 답해.
 - 데이터에 없는 사실, 숫자, 사건은 절대 지어내지 마. 투자 권유 표현은 쓰지 마.
 
-[답변 형식] 다른 말 없이 정확히 아래 두 줄로만 답해.
+[답변 형식] 다른 말 없이 정확히 아래 세 줄로만 답해.
 의견: SOXL 우세 또는 SOXS 우세 또는 판단 보류 중 하나
 근거: 한국어 1~2문장 (120자 이내, 데이터 속 구체적 사실을 들어서)
+손절 위험: 낮음 또는 보통 또는 높음 중 하나 - 이유 한 문장 (90자 이내)
 
 [데이터]
 ${data}`;
@@ -389,8 +418,10 @@ const setToken = t => { try { localStorage.setItem(TOKEN_KEY, t); } catch (e) {}
 function parseGpt(text) {
   const opinionLine = (text.match(/의견\s*[:：]\s*(.+)/) || [])[1] || '';
   const lean = /SOXL/i.test(opinionLine) ? 'SOXL' : /SOXS/i.test(opinionLine) ? 'SOXS' : /보류|HOLD/i.test(opinionLine) ? 'HOLD' : null;
-  const reason = ((text.match(/근거\s*[:：]\s*([\s\S]+)/) || [])[1] || '').trim();
-  return lean ? { lean, text: reason } : null;
+  const reason = ((text.match(/근거\s*[:：]\s*([\s\S]+?)(?=\n\s*\**\s*손절\s*위험|$)/) || [])[1] || '').replace(/^[*\s]+|[*\s]+$/g, '');
+  const risk = text.match(/손절\s*위험\**\s*[:：]\s*\**\s*(낮음|보통|높음)\s*[-—–:]?\s*(.*)/);
+  if (!lean) return null;
+  return risk ? { lean, text: reason, stop_risk: { level: risk[1], text: risk[2].trim() } } : { lean, text: reason };
 }
 
 const b64 = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
@@ -413,7 +444,9 @@ function renderGpt(date, gpt, actual) {
   if (!box) return;
   if (gpt) {
     box.innerHTML = `<div class="pick"><span class="sym small" style="color:${symColor(gpt.lean)}">${esc(LEAN[gpt.lean])}</span>${verdict(gpt.lean, actual)}</div>
-      <p class="reason">${esc(gpt.text)}</p><button class="link-btn" id="gpt-edit">고치기</button>`;
+      <p class="reason">${esc(gpt.text)}</p>
+      ${gpt.stop_risk ? `<p class="reason">손절 위험: <strong>${esc(gpt.stop_risk.level)}</strong> ${esc(gpt.stop_risk.text || '')}</p>` : ''}
+      <button class="link-btn" id="gpt-edit">고치기</button>`;
     document.getElementById('gpt-edit').onclick = () => renderGptForm(date, gpt, actual);
     return;
   }
@@ -425,7 +458,7 @@ function renderGptForm(date, current, actual) {
   const needToken = !getToken();
   box.innerHTML = `
     <label class="field-label" for="gpt-text">GPT 답변 붙여넣기 ("의견:"과 "근거:" 줄 포함)</label>
-    <textarea id="gpt-text" rows="3" placeholder="의견: 판단 보류&#10;근거: ...">${current ? esc(`의견: ${LEAN[current.lean]}\n근거: ${current.text}`) : ''}</textarea>
+    <textarea id="gpt-text" rows="4" placeholder="의견: 판단 보류&#10;근거: ...&#10;손절 위험: 보통 - ...">${current ? esc(`의견: ${LEAN[current.lean]}\n근거: ${current.text}` + (current.stop_risk ? `\n손절 위험: ${current.stop_risk.level} - ${current.stop_risk.text}` : '')) : ''}</textarea>
     ${needToken ? `<label class="field-label" for="gpt-token">GitHub 토큰 (처음 한 번만, 이 기기에만 저장)</label>
       <input id="gpt-token" type="password" autocomplete="off" placeholder="github_pat_...">` : ''}
     <div class="form-row"><button class="save-btn" id="gpt-save">저장</button><span class="form-msg" id="gpt-msg"></span></div>`;
@@ -457,7 +490,7 @@ async function show(date) {
     getJSON(`./briefing/ko/${date}.json`), getJSON(`./briefing/gpt/${date}.json`),
   ]);
   KO = ko?.headlines || {};
-  renderPre(pre, data?.bot_pick, ko?.opinion);
+  renderPre(pre, data?.bot_pick, ko?.opinion, ko?.stop_risk, data?.bot_stopped);
   if (pre) {
     renderGpt(date, gpt, data?.bot_pick);
     document.getElementById('gpt-copy').onclick = () => copyGptPrompt(pre);
