@@ -294,6 +294,8 @@ function renderPre(pre, actual, opinion) {
     ${opinion ? `<div class="pick"><span class="sym small" style="color:${symColor(opinion.lean)}">${esc(LEAN[opinion.lean] || '판단 보류')}</span>${verdict(opinion.lean, actual)}</div>
       <p class="reason">${esc(opinion.text)}</p>` : '<p class="empty">이 날은 Claude 의견이 없습니다.</p>'}
     <div class="label">GPT 의견</div>
+    <div class="form-row" style="margin:0 0 8px"><button class="save-btn" id="gpt-copy">GPT 질문 복사</button>
+      <span class="form-msg" id="gpt-copy-msg">데이터가 들어간 질문을 복사해 ChatGPT에 붙여넣으세요</span></div>
     <div id="gpt-box"></div>
     <p class="result ${actual ? '' : 'pending'}">${actual ? `실제 매수: <span style="color:${symColor(actual)}">${esc(actual)}</span>` : '실제 매수는 장 마감 집계 후 표시'}</p>
     <div class="gaps">${['SOXL', 'SOXS'].map(s => `<div class="gap-box"><div class="k">${s} 프리장</div>
@@ -321,6 +323,60 @@ function renderClose(data, md) {
       <tbody>${rows}</tbody></table></div>
     <div class="label">다음 거래일 일정 (ET)</div>${eventChips(data.events_next, '주요 지표 없음')}
     <div class="label">그날 뉴스</div>${newsList(data.news, 10)}`;
+}
+
+// ChatGPT can't open this site's files, so the whole question -- rules plus that
+// day's premarket data -- is built here and copied in one tap.
+function gptPrompt(pre) {
+  const p = pre.prediction, g = p.gaps;
+  const data = [
+    `날짜(미국 동부시간): ${pre.date}, 09:25 ET 기준`,
+    ...['SOXL', 'SOXS'].map(s => `${s}: 프리장 ${pre.premarket?.[s]} / 전일 종가 ${pre.prev_close?.[s]} (${pct(g[s])})`),
+    '다른 종목 프리장: ' + Object.entries(pre.context || {}).map(([s, v]) => `${s} ${pct(v)}`).join(', '),
+    `규칙 예측: ${p.symbol || '판단 보류'} - ${p.reason}`,
+    '오늘 일정(ET): ' + ((pre.events || []).join(', ') || '없음'),
+    '밤사이 뉴스(최신순):',
+    ...(pre.news || []).map(n => `- ${n.headline}${n.summary ? `\n  ${n.summary.trim()}` : ''}`),
+  ].join('\n');
+  return `아래 [데이터]를 보고, 오늘 자동매매 봇이 09:35(미국 동부시간)에 어느 종목을 살지 의견을 줘.
+
+[봇의 매수 규칙]
+SOXL은 반도체 3배 레버리지, SOXS는 반도체 인버스 3배 ETF다.
+09:30 시가가 전일 종가보다 3% 이상 높고, 09:35까지 그 갭의 20% 넘게 반납하지 않은 종목을 산다(둘 다면 갭이 큰 쪽).
+그런 종목이 없으면 09:30~09:35 사이에 더 많이 오른 종목을 산다.
+
+[과거 통계 (2022~2026년)]
+- 09:25 프리장 갭 5% 이상: 갭 큰 쪽을 봇이 산 비율 81%
+- 3~5%: 64%
+- 3% 미만: 약 51% (동전 던지기 수준)
+- 갭이 3% 미만인 날, 엔비디아·AMD·TSMC·나스닥 프리장 방향으로 맞혀 봐도 48~53%로 도움이 안 됐다.
+
+[판단 기준]
+- 장 시작 직후 몇 분의 움직임에 영향을 줄 "구체적인 근거"가 데이터 안에 있을 때만 한쪽을 골라. 예: 08:30에 이미 나온 CPI·고용지표 결과, 큰 반도체 실적이나 수출규제 뉴스.
+- 근거가 없으면 판단 보류라고 답해.
+- 데이터에 없는 사실, 숫자, 사건은 절대 지어내지 마. 투자 권유 표현은 쓰지 마.
+
+[답변 형식] 다른 말 없이 정확히 아래 두 줄로만 답해.
+의견: SOXL 우세 또는 SOXS 우세 또는 판단 보류 중 하나
+근거: 한국어 1~2문장 (120자 이내, 데이터 속 구체적 사실을 들어서)
+
+[데이터]
+${data}`;
+}
+
+async function copyGptPrompt(pre) {
+  const msg = document.getElementById('gpt-copy-msg');
+  const text = gptPrompt(pre);
+  try {
+    await navigator.clipboard.writeText(text);
+    msg.textContent = '복사했습니다. ChatGPT에 붙여넣고, 답변을 아래 칸에 붙여넣어 저장하세요.';
+  } catch (e) {
+    const box = document.getElementById('gpt-box');
+    box.insertAdjacentHTML('afterbegin', `<label class="field-label" for="gpt-prompt">아래 내용을 길게 눌러 전체 선택 후 복사하세요</label>
+      <textarea id="gpt-prompt" rows="6" readonly>${esc(text)}</textarea>`);
+    document.getElementById('gpt-prompt').select();
+    msg.textContent = '자동 복사가 막혀 아래에 문구를 펼쳤습니다.';
+  }
 }
 
 // --- GPT opinion: pasted on the page, saved to briefing/gpt/<date>.json through the GitHub API.
@@ -402,7 +458,10 @@ async function show(date) {
   ]);
   KO = ko?.headlines || {};
   renderPre(pre, data?.bot_pick, ko?.opinion);
-  if (pre) renderGpt(date, gpt, data?.bot_pick);
+  if (pre) {
+    renderGpt(date, gpt, data?.bot_pick);
+    document.getElementById('gpt-copy').onclick = () => copyGptPrompt(pre);
+  }
   renderClose(data, md);
 }
 
