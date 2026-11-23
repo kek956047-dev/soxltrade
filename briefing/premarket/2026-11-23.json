@@ -1,0 +1,75 @@
+{
+ "date": "2026-11-23",
+ "generated_at": "2026-11-23T09:25:04.122480-05:00",
+ "prev_close": {
+  "SOXL": 30.88,
+  "SOXS": 83.16,
+  "NVDA": 125.53,
+  "AMD": 424.39,
+  "TSM": 318.71,
+  "QQQ": 608.45
+ },
+ "premarket": {
+  "SOXL": 44.5285,
+  "SOXS": 45.9,
+  "NVDA": 165.12,
+  "AMD": 474.49,
+  "TSM": 377.6,
+  "QQQ": 653.19
+ },
+ "prediction": {
+  "symbol": "SOXL",
+  "gaps": {
+   "SOXL": 44.19851036269431,
+   "SOXS": -44.8051948051948
+  },
+  "confident": true,
+  "hit_rate": 81,
+  "reason": "SOXL 프리장 +44.2% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)"
+ },
+ "context": {
+  "NVDA": 31.53827770254123,
+  "AMD": 11.805179198378845,
+  "TSM": 18.477612876910054,
+  "QQQ": 7.3531103623962535
+ },
+ "events": [],
+ "news": [
+  {
+   "time": "2026-11-23T12:32:04Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Former CEO Jensen Huang Agrees to Senate Testimony",
+   "summary": "Former NVIDIA CEO Jensen Huang has reportedly agreed to testify in public before the U.S. Senate regarding recent controversies.",
+   "url": "https://www.moomoo.com/stock/NVDA-US?chain_id=Name1K9-3FXPhg.1lg7sk0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A107%2C%22f%22%3A%22www.moomoo.com%2Fetfs%2FFAZ-US%22%7D"
+  },
+  {
+   "time": "2026-11-23T11:31:37Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "Trump Administration Pushes for Reinstatement of Jensen Huang as NVIDIA CEO",
+   "summary": "The Trump administration has publicly advocated for the rehiring of former CEO Jensen Huang to lead NVIDIA following his recent resignation.",
+   "url": "https://www.morningstar.com/news/marketwatch/2026112333/nvidia-stock-bounces-as-trump-administration-pushes-for-rehiring-of-jensen-huang"
+  },
+  {
+   "time": "2026-11-23T02:01:26Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Launches Alpamayo 2 Edge Vision-Language-Action Model",
+   "summary": "NVIDIA has officially released Alpamayo 2 Edge, a 2-billion-parameter reasoning model designed for real-time autonomous driving on its DRIVE AGX Thor platform.",
+   "url": "https://af.net/realtime/nvidia-launches-2b-parameter-alpamayo-2-edge-vla-for-drive-thor/"
+  },
+  {
+   "time": "2026-11-23T02:01:09Z",
+   "symbols": [
+    "AVGO"
+   ],
+   "headline": "Broadcom Faces Unconfirmed Reports of Google Chip Order Reductions",
+   "summary": "Broadcom shares experienced a significant decline following unconfirmed reports suggesting that Google may reduce its chip orders from the company for the upcoming year.",
+   "url": "https://world.storm.mg/articles/1183977"
+  }
+ ]
+}

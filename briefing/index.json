@@ -1,1 +1,1 @@
-{"days": [{"date": "2026-11-20", "predicted": null, "confident": null, "ai_lean": null, "actual": "SOXS", "soxl_pct": -31.865342163355404}]}
+{"days": [{"date": "2026-11-23", "predicted": "SOXL", "confident": true, "ai_lean": null, "gpt_lean": null, "actual": null, "soxl_pct": null}, {"date": "2026-11-20", "predicted": null, "confident": null, "ai_lean": null, "gpt_lean": null, "actual": "SOXS", "soxl_pct": -31.865342163355404}]}
