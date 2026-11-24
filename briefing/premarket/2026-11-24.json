@@ -1,0 +1,119 @@
+{
+ "date": "2026-11-24",
+ "generated_at": "2026-11-24T09:25:04.376435-05:00",
+ "prev_close": {
+  "SOXL": 43.21,
+  "SOXS": 49.11,
+  "NVDA": 165.05,
+  "AMD": 453.46,
+  "TSM": 363.6,
+  "QQQ": 651.03
+ },
+ "premarket": {
+  "SOXL": 37.25,
+  "SOXS": 55.8,
+  "NVDA": 157.72,
+  "AMD": 430.6862,
+  "TSM": 354.97,
+  "QQQ": 638.61
+ },
+ "prediction": {
+  "symbol": "SOXS",
+  "gaps": {
+   "SOXL": -13.793103448275868,
+   "SOXS": 13.62248014660965
+  },
+  "confident": true,
+  "hit_rate": 81,
+  "reason": "SOXS 프리장 +13.6% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)"
+ },
+ "context": {
+  "NVDA": -4.441078461072411,
+  "AMD": -5.0222290830503225,
+  "TSM": -2.3734873487348707,
+  "QQQ": -1.9077461868116652
+ },
+ "events": [],
+ "stop_risk": {
+  "level": "높음",
+  "observed_pct": 27,
+  "vol5": 17.0,
+  "prev_move": 40.48,
+  "gap_abs": 13.62,
+  "symbol": "SOXS"
+ },
+ "news": [
+  {
+   "time": "2026-11-24T13:02:00Z",
+   "symbols": [
+    "AMD"
+   ],
+   "headline": "BNP Paribas Adjusts Price Target for AMD",
+   "summary": "BNP Paribas has revised its price target for Advanced Micro Devices, Inc. (AMD) to $650, down from its previous target of $960.",
+   "url": "https://www.marketscreener.com/news/bnp-paribas-adjusts-price-target-on-advanced-micro-devices-to-650-from-960-ce7851dbd98afe22"
+  },
+  {
+   "time": "2026-11-24T12:31:58Z",
+   "symbols": [
+    "AMD"
+   ],
+   "headline": "Bernstein Initiates Coverage on AMD with Buy Rating",
+   "summary": "Bernstein analyst Mark Newman has initiated coverage on Advanced Micro Devices, Inc. with a \"buy\" rating and a price target of $650.",
+   "url": "https://www.moomoo.com/stock/AMD-US?chain_id=Name1K9-3FXPhg.1lgakgg&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A57%2C%22f%22%3A%22www.moomoo.com%2Fstock%2FNEE-US%22%7D"
+  },
+  {
+   "time": "2026-11-24T11:32:30Z",
+   "symbols": [
+    "INTC"
+   ],
+   "headline": "BNP Paribas Adjusts Price Target on Intel to $60 From $70",
+   "summary": "BNP Paribas has revised its price target for Intel Corporation, lowering it from $70 to $60.",
+   "url": "https://www.marketscreener.com/news/bnp-paribas-adjusts-price-target-on-intel-to-60-from-70-ce7851dbd98afe2d"
+  },
+  {
+   "time": "2026-11-24T11:32:00Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "BNP Paribas Downgrades Micron Technology to Neutral",
+   "summary": "BNP Paribas has downgraded Micron Technology, Inc. to a Neutral rating with a price target of $775.",
+   "url": "https://www.marketscreener.com/news/bnp-paribas-downgrades-micron-technology-to-neutral-price-target-is-775-ce7851dbd98aff20"
+  },
+  {
+   "time": "2026-11-24T11:31:38Z",
+   "symbols": [
+    "AMD"
+   ],
+   "headline": "TrendForce Reports Growing Demand for AMD Helios AI Server Systems",
+   "summary": "Market research firm TrendForce reports increasing demand from cloud service providers for AMD's Helios AI server systems, while noting potential deployment and delivery challenges.",
+   "url": "https://sme.asia/global-ai-server-shipments-expected-to-jump-36/"
+  },
+  {
+   "time": "2026-11-24T11:01:59Z",
+   "symbols": [
+    "TSM"
+   ],
+   "headline": "TSMC Unit Seeks Texas Property Tax Concession for Proposed $22.6 Billion Chip Project",
+   "summary": "A TSMC subsidiary is seeking a property tax limitation in Texas for a proposed $22.6 billion semiconductor manufacturing facility.",
+   "url": "https://www.marketscreener.com/news/taiwan-semiconductor-s-decision-to-invest-in-texas-project-dependent-on-property-tax-abatement-ce7851dad080f321"
+  },
+  {
+   "time": "2026-11-24T09:31:30Z",
+   "symbols": [
+    "TSM"
+   ],
+   "headline": "TSMC Shares Surge to Limit-Up Following Nvidia CEO Reinstatement",
+   "summary": "Taiwan Semiconductor Manufacturing Co. (TSMC) shares reached their daily limit-up price on the Taiwan Stock Exchange on November 24, 2026, following the announcement that Nvidia had reinstated Jensen Huang as CEO.",
+   "url": "https://world.storm.mg/articles/1184651"
+  },
+  {
+   "time": "2026-11-23T22:31:32Z",
+   "symbols": [
+    "INTC"
+   ],
+   "headline": "Intel Announces Executive Participation in Upcoming Investor Conferences",
+   "summary": "Intel Corporation announced that company executives will participate in three investor conferences in December 2026 to discuss the company's business and strategy.",
+   "url": "https://finviz.com/news/426503/intel-corporation-to-participate-in-upcoming-investor-conferences"
+  }
+ ]
+}
