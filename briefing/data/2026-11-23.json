@@ -1,0 +1,186 @@
+{
+ "date": "2026-11-23",
+ "generated_at": "2026-11-23T20:10:12.579192-05:00",
+ "note": "SOXL = 3x semiconductor bull ETF, SOXS = 3x bear. Times are US Eastern. change_pct = regular close vs prior close; afterhours_pct = last afterhours trade vs regular close.",
+ "prices": {
+  "SOXL": {
+   "prev_close": 30.88,
+   "open": 44.82,
+   "high": 44.85,
+   "low": 40.68,
+   "close": 43.36,
+   "change_pct": 40.414507772020734,
+   "open_gap_pct": 45.14248704663213,
+   "afterhours_last": 42.95,
+   "afterhours_pct": -0.9455719557195486
+  },
+  "SOXS": {
+   "prev_close": 83.16,
+   "open": 45.1,
+   "high": 56.3,
+   "low": 44.95,
+   "close": 49.05,
+   "change_pct": -41.01731601731602,
+   "open_gap_pct": -45.767195767195766,
+   "afterhours_last": 49.4,
+   "afterhours_pct": 0.7135575942915473
+  },
+  "NVDA": {
+   "prev_close": 125.53,
+   "open": 167.04,
+   "high": 171.5,
+   "low": 156.93,
+   "close": 165.185,
+   "change_pct": 31.590058153429457,
+   "open_gap_pct": 33.067792559547506,
+   "afterhours_last": 166.44,
+   "afterhours_pct": 0.7597542149710979
+  },
+  "AMD": {
+   "prev_close": 424.39,
+   "open": 477.75,
+   "high": 477.75,
+   "low": 432.0105,
+   "close": 454.01,
+   "change_pct": 6.979429298522577,
+   "open_gap_pct": 12.573340559391122,
+   "afterhours_last": 450.2201,
+   "afterhours_pct": -0.834761348868962
+  },
+  "AVGO": {
+   "prev_close": 304.41,
+   "open": 321.0,
+   "high": 324.46,
+   "low": 304.56,
+   "close": 313.54,
+   "change_pct": 2.999244440064386,
+   "open_gap_pct": 5.449886666009651,
+   "afterhours_last": 312.32,
+   "afterhours_pct": -0.3891050583657685
+  },
+  "MU": {
+   "prev_close": 594.51,
+   "open": 690.87,
+   "high": 720.69,
+   "low": 666.66,
+   "close": 707.69,
+   "change_pct": 19.0375267026627,
+   "open_gap_pct": 16.208305999899085,
+   "afterhours_last": 705.4999,
+   "afterhours_pct": -0.3094716613206372
+  },
+  "TSM": {
+   "prev_close": 318.71,
+   "open": 385.49,
+   "high": 386.9,
+   "low": 361.66,
+   "close": 363.27,
+   "change_pct": 13.981362367042149,
+   "open_gap_pct": 20.953217658686583,
+   "afterhours_last": 369.5,
+   "afterhours_pct": 1.7149778401739812
+  },
+  "SOXX": {
+   "prev_close": 123.4,
+   "open": 142.1,
+   "high": 142.27,
+   "low": 136.64,
+   "close": 140.24,
+   "change_pct": 13.646677471636949,
+   "open_gap_pct": 15.15397082658021,
+   "afterhours_last": 139.74,
+   "afterhours_pct": -0.35653166001140546
+  },
+  "QQQ": {
+   "prev_close": 608.45,
+   "open": 655.98,
+   "high": 657.53,
+   "low": 641.9501,
+   "close": 650.87,
+   "change_pct": 6.971813624784273,
+   "open_gap_pct": 7.811652559783044,
+   "afterhours_last": 651.3,
+   "afterhours_pct": 0.06606542012996819
+  },
+  "SPY": {
+   "prev_close": 689.81,
+   "open": 724.38,
+   "high": 727.98,
+   "low": 713.53,
+   "close": 722.42,
+   "change_pct": 4.727388701236568,
+   "open_gap_pct": 5.011524912657106,
+   "afterhours_last": 723.5,
+   "afterhours_pct": 0.1494975222170014
+  }
+ },
+ "events_today": [],
+ "events_next": [],
+ "bot_pick": "SOXL",
+ "bot_stopped": false,
+ "news": [
+  {
+   "time": "2026-11-23T22:31:32Z",
+   "symbols": [
+    "INTC"
+   ],
+   "headline": "Intel Announces Executive Participation in Upcoming Investor Conferences",
+   "summary": "Intel Corporation announced that company executives will participate in three investor conferences in December 2026 to discuss the company's business and strategy.",
+   "url": "https://finviz.com/news/426503/intel-corporation-to-participate-in-upcoming-investor-conferences"
+  },
+  {
+   "time": "2026-11-23T15:31:13Z",
+   "symbols": [
+    "ASML"
+   ],
+   "headline": "ASML Reports Share Buyback Transactions",
+   "summary": "ASML Holding N.V. disclosed recent transactions conducted under its ongoing share buyback program.",
+   "url": "https://www.globenewswire.com/news-release/2026/11/23/3408374/0/en/asml-reports-transactions-under-its-current-share-buyback-program.html"
+  },
+  {
+   "time": "2026-11-23T14:31:20Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Reinstates Jensen Huang as President and CEO",
+   "summary": "NVIDIA's Board of Directors has unanimously voted to reinstate Jensen Huang as President, Chief Executive Officer, and a member of the Board, effective immediately.",
+   "url": "https://www.globenewswire.com/news-release/2026/11/23/3408381/0/en/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director.html"
+  },
+  {
+   "time": "2026-11-23T12:32:04Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Former CEO Jensen Huang Agrees to Senate Testimony",
+   "summary": "Former NVIDIA CEO Jensen Huang has reportedly agreed to testify in public before the U.S. Senate regarding recent controversies.",
+   "url": "https://www.moomoo.com/stock/NVDA-US?chain_id=Name1K9-3FXPhg.1lg7sk0&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A107%2C%22f%22%3A%22www.moomoo.com%2Fetfs%2FFAZ-US%22%7D"
+  },
+  {
+   "time": "2026-11-23T11:31:37Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "Trump Administration Pushes for Reinstatement of Jensen Huang as NVIDIA CEO",
+   "summary": "The Trump administration has publicly advocated for the rehiring of former CEO Jensen Huang to lead NVIDIA following his recent resignation.",
+   "url": "https://www.morningstar.com/news/marketwatch/2026112333/nvidia-stock-bounces-as-trump-administration-pushes-for-rehiring-of-jensen-huang"
+  },
+  {
+   "time": "2026-11-23T02:01:26Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Launches Alpamayo 2 Edge Vision-Language-Action Model",
+   "summary": "NVIDIA has officially released Alpamayo 2 Edge, a 2-billion-parameter reasoning model designed for real-time autonomous driving on its DRIVE AGX Thor platform.",
+   "url": "https://af.net/realtime/nvidia-launches-2b-parameter-alpamayo-2-edge-vla-for-drive-thor/"
+  },
+  {
+   "time": "2026-11-23T02:01:09Z",
+   "symbols": [
+    "AVGO"
+   ],
+   "headline": "Broadcom Faces Unconfirmed Reports of Google Chip Order Reductions",
+   "summary": "Broadcom shares experienced a significant decline following unconfirmed reports suggesting that Google may reduce its chip orders from the company for the upcoming year.",
+   "url": "https://world.storm.mg/articles/1183977"
+  }
+ ]
+}
