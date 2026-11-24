@@ -1,1 +1,15 @@
-{"opinion": {"lean": "SOXL", "text": "SOXL 프리장 +44.2% 갭으로 큰 갭 규칙상 SOXL 우세. 엔비디아 젠슨 황 복귀 추진 보도가 재료."}, "headlines": {"NVIDIA Former CEO Jensen Huang Agrees to Senate Testimony": "엔비디아 전 CEO 젠슨 황, 상원 증언 수락", "Trump Administration Pushes for Reinstatement of Jensen Huang as NVIDIA CEO": "트럼프 행정부, 젠슨 황의 엔비디아 CEO 복귀 추진", "NVIDIA Launches Alpamayo 2 Edge Vision-Language-Action Model": "엔비디아, 비전-언어-행동 모델 '알파마요 2 엣지' 출시", "Broadcom Faces Unconfirmed Reports of Google Chip Order Reductions": "브로드컴, 구글 칩 주문 축소 미확인 보도에 직면"}}
+{
+ "opinion": {
+  "lean": "SOXL",
+  "text": "SOXL 프리장 +44.2% 갭으로 큰 갭 규칙상 SOXL 우세. 엔비디아 젠슨 황 복귀 추진 보도가 재료."
+ },
+ "headlines": {
+  "NVIDIA Former CEO Jensen Huang Agrees to Senate Testimony": "엔비디아 전 CEO 젠슨 황, 상원 증언 수락",
+  "Trump Administration Pushes for Reinstatement of Jensen Huang as NVIDIA CEO": "트럼프 행정부, 젠슨 황의 엔비디아 CEO 복귀 추진",
+  "NVIDIA Launches Alpamayo 2 Edge Vision-Language-Action Model": "엔비디아, 비전-언어-행동 모델 '알파마요 2 엣지' 출시",
+  "Broadcom Faces Unconfirmed Reports of Google Chip Order Reductions": "브로드컴, 구글 칩 주문 축소 미확인 보도에 직면",
+  "Intel Announces Executive Participation in Upcoming Investor Conferences": "인텔, 임원진 12월 투자자 콘퍼런스 참가 발표",
+  "ASML Reports Share Buyback Transactions": "ASML, 자사주 매입 거래 내역 공시",
+  "NVIDIA Reinstates Jensen Huang as President and CEO": "엔비디아, 젠슨 황을 사장 겸 CEO로 복직"
+ }
+}
