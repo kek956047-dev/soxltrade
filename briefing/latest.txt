@@ -1,27 +1,17 @@
-SOXL/SOXS premarket briefing - date (US Eastern): 2026-11-24, generated 09:25 ET
+SOXL/SOXS premarket briefing - date (US Eastern): 2026-11-25, generated 09:25 ET
 
 [Premarket at 09:25 ET vs prior close]
-SOXL: 37.25 (prior close 43.21), -13.8%
-SOXS: 55.8 (prior close 49.11), +13.6%
-Other premarket moves: NVDA -4.4%, AMD -5.0%, TSM -2.4%, QQQ -1.9%
-Rule-based call: SOXS - SOXS 프리장 +13.6% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)
--6% intraday stop risk if SOXS is bought (statistical baseline): 높음 (historically ~27% of such days stopped out; 5-day avg SOXL range 17.0%, prior-day SOXL move 40.48%, gap 13.62%)
+SOXL: 27.6185 (prior close 32.6), -15.3%
+SOXS: 70.45 (prior close 60.96), +15.6%
+Other premarket moves: NVDA -6.1%, AMD -6.9%, TSM -5.5%, QQQ -3.2%
+Rule-based call: SOXS - SOXS 프리장 +15.6% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)
+-6% intraday stop risk if SOXS is bought (statistical baseline): 높음 (historically ~27% of such days stopped out; 5-day avg SOXL range 18.34%, prior-day SOXL move 24.79%, gap 15.57%)
 Scheduled today (ET): none
 
 [Overnight news, newest first]
-- 2026-11-24 13:02 UTC | AMD | BNP Paribas Adjusts Price Target for AMD
-  BNP Paribas has revised its price target for Advanced Micro Devices, Inc. (AMD) to $650, down from its previous target of $960.
-- 2026-11-24 12:31 UTC | AMD | Bernstein Initiates Coverage on AMD with Buy Rating
-  Bernstein analyst Mark Newman has initiated coverage on Advanced Micro Devices, Inc. with a "buy" rating and a price target of $650.
-- 2026-11-24 11:32 UTC | INTC | BNP Paribas Adjusts Price Target on Intel to $60 From $70
-  BNP Paribas has revised its price target for Intel Corporation, lowering it from $70 to $60.
-- 2026-11-24 11:32 UTC | MU | BNP Paribas Downgrades Micron Technology to Neutral
-  BNP Paribas has downgraded Micron Technology, Inc. to a Neutral rating with a price target of $775.
-- 2026-11-24 11:31 UTC | AMD | TrendForce Reports Growing Demand for AMD Helios AI Server Systems
-  Market research firm TrendForce reports increasing demand from cloud service providers for AMD's Helios AI server systems, while noting potential deployment and delivery challenges.
-- 2026-11-24 11:01 UTC | TSM | TSMC Unit Seeks Texas Property Tax Concession for Proposed $22.6 Billion Chip Project
-  A TSMC subsidiary is seeking a property tax limitation in Texas for a proposed $22.6 billion semiconductor manufacturing facility.
-- 2026-11-24 09:31 UTC | TSM | TSMC Shares Surge to Limit-Up Following Nvidia CEO Reinstatement
-  Taiwan Semiconductor Manufacturing Co. (TSMC) shares reached their daily limit-up price on the Taiwan Stock Exchange on November 24, 2026, following the announcement that Nvidia had reinstated Jensen Huang as CEO.
-- 2026-11-23 22:31 UTC | INTC | Intel Announces Executive Participation in Upcoming Investor Conferences
-  Intel Corporation announced that company executives will participate in three investor conferences in December 2026 to discuss the company's business and strategy.
+- 2026-11-25 14:02 UTC | TSM | President Trump to Preside Over TSMC Arizona Plant Expansion Ceremony
+  President Donald Trump is scheduled to preside over a ceremony marking the expansion of TSMC's semiconductor manufacturing facility in Arizona.
+- 2026-11-25 12:32 UTC | NVDA | NVIDIA CEO Jensen Huang Reportedly Apologizes to Staff and Enters Therapy
+  Following his reinstatement as CEO, Jensen Huang has reportedly apologized to NVIDIA employees and disclosed that he is in therapy.
+- 2026-11-25 00:01 UTC | MU | Micron Discloses Increased Executive Security Expenses
+  Micron Technology's latest proxy filing reveals a significant increase in security spending for CEO Sanjay Mehrotra.

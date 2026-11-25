@@ -1,0 +1,74 @@
+{
+ "date": "2026-11-25",
+ "generated_at": "2026-11-25T09:25:04.039305-05:00",
+ "prev_close": {
+  "SOXL": 32.6,
+  "SOXS": 60.96,
+  "NVDA": 155.38,
+  "AMD": 413.27,
+  "TSM": 349.2,
+  "QQQ": 638.1
+ },
+ "premarket": {
+  "SOXL": 27.6185,
+  "SOXS": 70.45,
+  "NVDA": 145.93,
+  "AMD": 384.743,
+  "TSM": 330.09,
+  "QQQ": 617.5
+ },
+ "prediction": {
+  "symbol": "SOXS",
+  "gaps": {
+   "SOXL": -15.280674846625764,
+   "SOXS": 15.567585301837283
+  },
+  "confident": true,
+  "hit_rate": 81,
+  "reason": "SOXS 프리장 +15.6% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)"
+ },
+ "context": {
+  "NVDA": -6.081863817737155,
+  "AMD": -6.9027512280107395,
+  "TSM": -5.472508591065295,
+  "QQQ": -3.2283341169095814
+ },
+ "events": [],
+ "stop_risk": {
+  "level": "높음",
+  "observed_pct": 27,
+  "vol5": 18.34,
+  "prev_move": 24.79,
+  "gap_abs": 15.57,
+  "symbol": "SOXS"
+ },
+ "news": [
+  {
+   "time": "2026-11-25T14:02:09Z",
+   "symbols": [
+    "TSM"
+   ],
+   "headline": "President Trump to Preside Over TSMC Arizona Plant Expansion Ceremony",
+   "summary": "President Donald Trump is scheduled to preside over a ceremony marking the expansion of TSMC's semiconductor manufacturing facility in Arizona.",
+   "url": "https://www.marketscreener.com/news/trump-to-preside-over-taiwan-semiconductor-plant-expansion-ceremony-in-arizona-ce7851d8d98ef32c"
+  },
+  {
+   "time": "2026-11-25T12:32:12Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA CEO Jensen Huang Reportedly Apologizes to Staff and Enters Therapy",
+   "summary": "Following his reinstatement as CEO, Jensen Huang has reportedly apologized to NVIDIA employees and disclosed that he is in therapy.",
+   "url": "https://www.marketscreener.com/news/nvidia-s-huang-reportedly-apologizes-to-staff-says-he-is-in-therapy-ce7851dbd088f321"
+  },
+  {
+   "time": "2026-11-25T00:01:35Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "Micron Discloses Increased Executive Security Expenses",
+   "summary": "Micron Technology's latest proxy filing reveals a significant increase in security spending for CEO Sanjay Mehrotra.",
+   "url": "https://www.morningstar.com/news/marketwatch/20261124417/micron-boosted-ceo-sanjay-mehrotras-security-budget-by-2000-new-filing-shows"
+  }
+ ]
+}
