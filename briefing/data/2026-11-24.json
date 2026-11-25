@@ -1,0 +1,204 @@
+{
+ "date": "2026-11-24",
+ "generated_at": "2026-11-24T20:10:06.040224-05:00",
+ "note": "SOXL = 3x semiconductor bull ETF, SOXS = 3x bear. Times are US Eastern. change_pct = regular close vs prior close; afterhours_pct = last afterhours trade vs regular close.",
+ "prices": {
+  "SOXL": {
+   "prev_close": 43.21,
+   "open": 37.47,
+   "high": 37.93,
+   "low": 30.16,
+   "close": 32.61,
+   "change_pct": -24.53135848183291,
+   "open_gap_pct": -13.283962045822728,
+   "afterhours_last": 31.88,
+   "afterhours_pct": -2.23857712358172
+  },
+  "SOXS": {
+   "prev_close": 49.11,
+   "open": 55.65,
+   "high": 63.86,
+   "low": 55.09,
+   "close": 61.0821,
+   "change_pct": 24.378130726939528,
+   "open_gap_pct": 13.317043372021997,
+   "afterhours_last": 62.4,
+   "afterhours_pct": 2.1575879021841216
+  },
+  "NVDA": {
+   "prev_close": 165.05,
+   "open": 159.1,
+   "high": 159.92,
+   "low": 150.5,
+   "close": 155.4759,
+   "change_pct": -5.800727052408372,
+   "open_gap_pct": -3.6049681914571474,
+   "afterhours_last": 152.2,
+   "afterhours_pct": -2.1070146562907843
+  },
+  "AMD": {
+   "prev_close": 453.46,
+   "open": 425.125,
+   "high": 428.8677,
+   "low": 396.01,
+   "close": 413.245,
+   "change_pct": -8.868477925285578,
+   "open_gap_pct": -6.2486217086402345,
+   "afterhours_last": 409.5101,
+   "afterhours_pct": -0.9037979890863745
+  },
+  "AVGO": {
+   "prev_close": 313.55,
+   "open": 301.29,
+   "high": 309.18,
+   "low": 297.8,
+   "close": 301.23,
+   "change_pct": -3.929197895072556,
+   "open_gap_pct": -3.9100621910381106,
+   "afterhours_last": 303.0,
+   "afterhours_pct": 0.5875908774026328
+  },
+  "MU": {
+   "prev_close": 707.7,
+   "open": 669.39,
+   "high": 672.07,
+   "low": 622.22,
+   "close": 629.966,
+   "change_pct": -10.984032782252374,
+   "open_gap_pct": -5.413310724883436,
+   "afterhours_last": 621.6726,
+   "afterhours_pct": -1.3164837467418922
+  },
+  "TSM": {
+   "prev_close": 363.6,
+   "open": 356.47,
+   "high": 357.2,
+   "low": 339.73,
+   "close": 349.42,
+   "change_pct": -3.899889988998906,
+   "open_gap_pct": -1.9609460946094615,
+   "afterhours_last": 348.2,
+   "afterhours_pct": -0.3491500200332065
+  },
+  "SOXX": {
+   "prev_close": 140.22,
+   "open": 133.75,
+   "high": 134.39,
+   "low": 126.0,
+   "close": 128.66,
+   "change_pct": -8.244187705034944,
+   "open_gap_pct": -4.614177720724577,
+   "afterhours_last": 127.6947,
+   "afterhours_pct": -0.7502720348204539
+  },
+  "QQQ": {
+   "prev_close": 651.03,
+   "open": 640.05,
+   "high": 648.0,
+   "low": 631.15,
+   "close": 638.12,
+   "change_pct": -1.9830115355667144,
+   "open_gap_pct": -1.6865582231233578,
+   "afterhours_last": 635.41,
+   "afterhours_pct": -0.4246850122234136
+  },
+  "SPY": {
+   "prev_close": 722.29,
+   "open": 715.18,
+   "high": 720.93,
+   "low": 712.14,
+   "close": 718.79,
+   "change_pct": -0.4845699095931022,
+   "open_gap_pct": -0.984369159201981,
+   "afterhours_last": 716.7572,
+   "afterhours_pct": -0.2828086089121884
+  }
+ },
+ "events_today": [],
+ "events_next": [],
+ "bot_pick": "SOXS",
+ "bot_stopped": false,
+ "news": [
+  {
+   "time": "2026-11-25T00:01:35Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "Micron Discloses Increased Executive Security Expenses",
+   "summary": "Micron Technology's latest proxy filing reveals a significant increase in security spending for CEO Sanjay Mehrotra.",
+   "url": "https://www.morningstar.com/news/marketwatch/20261124417/micron-boosted-ceo-sanjay-mehrotras-security-budget-by-2000-new-filing-shows"
+  },
+  {
+   "time": "2026-11-24T14:32:47Z",
+   "symbols": [
+    "AVGO"
+   ],
+   "headline": "BNP Paribas Adjusts Broadcom Price Target",
+   "summary": "BNP Paribas has revised its price target for Broadcom Inc. (AVGO), lowering it from $540 to $485.",
+   "url": "https://de.marketscreener.com/boerse-nachrichten/broadcom-inc-bnp-paribas-bleibt-neutral-ce7851dbdb8ffe27"
+  },
+  {
+   "time": "2026-11-24T13:02:00Z",
+   "symbols": [
+    "AMD"
+   ],
+   "headline": "BNP Paribas Adjusts Price Target for AMD",
+   "summary": "BNP Paribas has revised its price target for Advanced Micro Devices, Inc. (AMD) to $650, down from its previous target of $960.",
+   "url": "https://www.marketscreener.com/news/bnp-paribas-adjusts-price-target-on-advanced-micro-devices-to-650-from-960-ce7851dbd98afe22"
+  },
+  {
+   "time": "2026-11-24T12:31:58Z",
+   "symbols": [
+    "AMD"
+   ],
+   "headline": "Bernstein Initiates Coverage on AMD with Buy Rating",
+   "summary": "Bernstein analyst Mark Newman has initiated coverage on Advanced Micro Devices, Inc. with a \"buy\" rating and a price target of $650.",
+   "url": "https://www.moomoo.com/stock/AMD-US?chain_id=Name1K9-3FXPhg.1lgakgg&global_content=%7B%22promote_id%22%3A13764%2C%22sub_promote_id%22%3A57%2C%22f%22%3A%22www.moomoo.com%2Fstock%2FNEE-US%22%7D"
+  },
+  {
+   "time": "2026-11-24T11:32:30Z",
+   "symbols": [
+    "INTC"
+   ],
+   "headline": "BNP Paribas Adjusts Price Target on Intel to $60 From $70",
+   "summary": "BNP Paribas has revised its price target for Intel Corporation, lowering it from $70 to $60.",
+   "url": "https://www.marketscreener.com/news/bnp-paribas-adjusts-price-target-on-intel-to-60-from-70-ce7851dbd98afe2d"
+  },
+  {
+   "time": "2026-11-24T11:32:00Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "BNP Paribas Downgrades Micron Technology to Neutral",
+   "summary": "BNP Paribas has downgraded Micron Technology, Inc. to a Neutral rating with a price target of $775.",
+   "url": "https://www.marketscreener.com/news/bnp-paribas-downgrades-micron-technology-to-neutral-price-target-is-775-ce7851dbd98aff20"
+  },
+  {
+   "time": "2026-11-24T11:31:38Z",
+   "symbols": [
+    "AMD"
+   ],
+   "headline": "TrendForce Reports Growing Demand for AMD Helios AI Server Systems",
+   "summary": "Market research firm TrendForce reports increasing demand from cloud service providers for AMD's Helios AI server systems, while noting potential deployment and delivery challenges.",
+   "url": "https://sme.asia/global-ai-server-shipments-expected-to-jump-36/"
+  },
+  {
+   "time": "2026-11-24T11:01:59Z",
+   "symbols": [
+    "TSM"
+   ],
+   "headline": "TSMC Unit Seeks Texas Property Tax Concession for Proposed $22.6 Billion Chip Project",
+   "summary": "A TSMC subsidiary is seeking a property tax limitation in Texas for a proposed $22.6 billion semiconductor manufacturing facility.",
+   "url": "https://www.marketscreener.com/news/taiwan-semiconductor-s-decision-to-invest-in-texas-project-dependent-on-property-tax-abatement-ce7851dad080f321"
+  },
+  {
+   "time": "2026-11-24T09:31:30Z",
+   "symbols": [
+    "TSM"
+   ],
+   "headline": "TSMC Shares Surge to Limit-Up Following Nvidia CEO Reinstatement",
+   "summary": "Taiwan Semiconductor Manufacturing Co. (TSMC) shares reached their daily limit-up price on the Taiwan Stock Exchange on November 24, 2026, following the announcement that Nvidia had reinstated Jensen Huang as CEO.",
+   "url": "https://world.storm.mg/articles/1184651"
+  }
+ ]
+}
