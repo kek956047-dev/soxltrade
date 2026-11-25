@@ -1,9 +1,21 @@
-{"opinion":{"lean":"SOXS","text":"SOXL 프리장 -13.8%, SOXS +13.6% 갭에 NVDA·AMD 약세. 다만 엔비디아 CEO 복귀 소식이 변수."},
-"stop_risk":{"level":"높음","text":"변동성 최상(5일 평균 17%, 전일 40% 변동)+CEO 복귀 헤드라인 번복 가능성으로 기준선 유지."},
-"headlines":{
-"BNP Paribas Adjusts Price Target for AMD":"BNP파리바, AMD 목표주가 조정",
-"Bernstein Initiates Coverage on AMD with Buy Rating":"번스타인, AMD 매수 의견으로 커버리지 개시",
-"BNP Paribas Adjusts Price Target on Intel to $60 From $70":"BNP파리바, 인텔 목표주가 70달러에서 60달러로 하향",
-"BNP Paribas Downgrades Micron Technology to Neutral":"BNP파리바, 마이크론 투자의견 중립으로 하향",
-"TrendForce Reports Growing Demand for AMD Helios AI Server Systems":"트렌드포스 \"AMD 헬리오스 AI 서버 수요 증가\"",
-"TSMC Unit Seeks Texas Property Tax Concession for Proposed $22.6 Billion Chip Project":"TSMC 자회사, 226억 달러 텍사스 반도체 프로젝트 재산세 감면 추진"}}
+{
+ "opinion": {
+  "lean": "SOXS",
+  "text": "SOXL 프리장 -13.8%, SOXS +13.6% 갭에 NVDA·AMD 약세. 다만 엔비디아 CEO 복귀 소식이 변수."
+ },
+ "stop_risk": {
+  "level": "높음",
+  "text": "변동성 최상(5일 평균 17%, 전일 40% 변동)+CEO 복귀 헤드라인 번복 가능성으로 기준선 유지."
+ },
+ "headlines": {
+  "BNP Paribas Adjusts Price Target for AMD": "BNP파리바, AMD 목표주가 조정",
+  "Bernstein Initiates Coverage on AMD with Buy Rating": "번스타인, AMD 매수 의견으로 커버리지 개시",
+  "BNP Paribas Adjusts Price Target on Intel to $60 From $70": "BNP파리바, 인텔 목표주가 70달러에서 60달러로 하향",
+  "BNP Paribas Downgrades Micron Technology to Neutral": "BNP파리바, 마이크론 투자의견 중립으로 하향",
+  "TrendForce Reports Growing Demand for AMD Helios AI Server Systems": "트렌드포스 \"AMD 헬리오스 AI 서버 수요 증가\"",
+  "TSMC Unit Seeks Texas Property Tax Concession for Proposed $22.6 Billion Chip Project": "TSMC 자회사, 226억 달러 텍사스 반도체 프로젝트 재산세 감면 추진",
+  "Micron Discloses Increased Executive Security Expenses": "마이크론, 경영진 경호 비용 증가 공개",
+  "BNP Paribas Adjusts Broadcom Price Target": "BNP파리바, 브로드컴 목표주가 조정",
+  "TSMC Shares Surge to Limit-Up Following Nvidia CEO Reinstatement": "엔비디아 CEO 복직 후 TSMC 주가 대만서 상한가"
+ }
+}
