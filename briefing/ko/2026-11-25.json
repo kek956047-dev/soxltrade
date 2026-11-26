@@ -1,6 +1,17 @@
-{"opinion":{"lean":"SOXS","text":"SOXS 프리장 +15.6% 갭, 엔비디아·AMD·TSMC 5~7%대 약세로 하락 쏠림. 갭 유지 여부가 관건."},
-"stop_risk":{"level":"높음","text":"최근 5일 변동폭 18%, 전일 25% 급변, 갭 15.6%로 기준선 높음 유지. 뉴스는 중립."},
-"headlines":{
-"President Trump to Preside Over TSMC Arizona Plant Expansion Ceremony":"트럼프 대통령, TSMC 애리조나 공장 확장 기념식 주재",
-"NVIDIA CEO Jensen Huang Reportedly Apologizes to Staff and Enters Therapy":"엔비디아 젠슨 황 CEO, 직원들에게 사과하고 치료 중이라고 보도",
-"Micron Discloses Increased Executive Security Expenses":"마이크론, 경영진 경호 비용 증가 공개"}}
+{
+ "opinion": {
+  "lean": "SOXS",
+  "text": "SOXS 프리장 +15.6% 갭, 엔비디아·AMD·TSMC 5~7%대 약세로 하락 쏠림. 갭 유지 여부가 관건."
+ },
+ "stop_risk": {
+  "level": "높음",
+  "text": "최근 5일 변동폭 18%, 전일 25% 급변, 갭 15.6%로 기준선 높음 유지. 뉴스는 중립."
+ },
+ "headlines": {
+  "President Trump to Preside Over TSMC Arizona Plant Expansion Ceremony": "트럼프 대통령, TSMC 애리조나 공장 확장 기념식 주재",
+  "NVIDIA CEO Jensen Huang Reportedly Apologizes to Staff and Enters Therapy": "엔비디아 젠슨 황 CEO, 직원들에게 사과하고 치료 중이라고 보도",
+  "Micron Discloses Increased Executive Security Expenses": "마이크론, 경영진 경호 비용 증가 공개",
+  "Tradr ETFs Announces Upcoming Launch of Leveraged ETF Featuring Micron Technology, Inc.": "트레이더 ETF, 마이크론 포함 레버리지 ETF 출시 예정 발표",
+  "UBS Adjusts Broadcom Price Target": "UBS, 브로드컴 목표주가 조정"
+ }
+}
