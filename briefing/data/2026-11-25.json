@@ -1,0 +1,159 @@
+{
+ "date": "2026-11-25",
+ "generated_at": "2026-11-25T20:10:06.105973-05:00",
+ "note": "SOXL = 3x semiconductor bull ETF, SOXS = 3x bear. Times are US Eastern. change_pct = regular close vs prior close; afterhours_pct = last afterhours trade vs regular close.",
+ "prices": {
+  "SOXL": {
+   "prev_close": 32.6,
+   "open": 27.0,
+   "high": 32.12,
+   "low": 24.605,
+   "close": 32.02,
+   "change_pct": -1.7791411042944683,
+   "open_gap_pct": -17.177914110429448,
+   "afterhours_last": 33.3392,
+   "afterhours_pct": 4.119925046845707
+  },
+  "SOXS": {
+   "prev_close": 60.96,
+   "open": 71.65,
+   "high": 76.08,
+   "low": 61.9738,
+   "close": 62.23,
+   "change_pct": 2.083333333333326,
+   "open_gap_pct": 17.536089238845154,
+   "afterhours_last": 59.65,
+   "afterhours_pct": -4.145910332636992
+  },
+  "NVDA": {
+   "prev_close": 155.38,
+   "open": 144.0,
+   "high": 150.37,
+   "low": 141.17,
+   "close": 149.32,
+   "change_pct": -3.9001158450250983,
+   "open_gap_pct": -7.323979920195645,
+   "afterhours_last": 151.423,
+   "afterhours_pct": 1.4083846772033226
+  },
+  "AMD": {
+   "prev_close": 413.27,
+   "open": 382.78,
+   "high": 407.77,
+   "low": 370.4,
+   "close": 406.1,
+   "change_pct": -1.7349432574345958,
+   "open_gap_pct": -7.377743363902534,
+   "afterhours_last": 415.06,
+   "afterhours_pct": 2.2063531149963067
+  },
+  "AVGO": {
+   "prev_close": 301.08,
+   "open": 286.98,
+   "high": 301.27,
+   "low": 278.0,
+   "close": 300.665,
+   "change_pct": -0.13783711970238866,
+   "open_gap_pct": -4.683140693503374,
+   "afterhours_last": 303.75,
+   "afterhours_pct": 1.0260589027655254
+  },
+  "MU": {
+   "prev_close": 629.79,
+   "open": 575.0,
+   "high": 604.945,
+   "low": 548.13,
+   "close": 600.17,
+   "change_pct": -4.703155019927275,
+   "open_gap_pct": -8.699725305260475,
+   "afterhours_last": 616.1666,
+   "afterhours_pct": 2.665344818967963
+  },
+  "TSM": {
+   "prev_close": 349.2,
+   "open": 329.125,
+   "high": 343.165,
+   "low": 321.1,
+   "close": 342.31,
+   "change_pct": -1.9730813287514248,
+   "open_gap_pct": -5.748854524627722,
+   "afterhours_last": 347.14,
+   "afterhours_pct": 1.4110017235838823
+  },
+  "SOXX": {
+   "prev_close": 128.62,
+   "open": 121.21,
+   "high": 128.09,
+   "low": 118.18,
+   "close": 127.98,
+   "change_pct": -0.49758979940911496,
+   "open_gap_pct": -5.761156896283637,
+   "afterhours_last": 129.68,
+   "afterhours_pct": 1.3283325519612532
+  },
+  "QQQ": {
+   "prev_close": 638.1,
+   "open": 617.1,
+   "high": 634.89,
+   "low": 607.74,
+   "close": 633.95,
+   "change_pct": -0.6503682808337241,
+   "open_gap_pct": -3.2910202162670377,
+   "afterhours_last": 636.8682,
+   "afterhours_pct": 0.4603202145279539
+  },
+  "SPY": {
+   "prev_close": 718.78,
+   "open": 703.19,
+   "high": 718.43,
+   "low": 695.45,
+   "close": 716.75,
+   "change_pct": -0.2824229945184831,
+   "open_gap_pct": -2.1689529480508507,
+   "afterhours_last": 720.36,
+   "afterhours_pct": 0.5036623648412952
+  }
+ },
+ "events_today": [],
+ "events_next": [],
+ "bot_pick": "SOXS",
+ "bot_stopped": true,
+ "news": [
+  {
+   "time": "2026-11-25T16:01:33Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "Tradr ETFs Announces Upcoming Launch of Leveraged ETF Featuring Micron Technology, Inc.",
+   "summary": "Tradr ETFs announced plans to launch the \"Tradr Triple Threat 2X Long Memory Daily ETF\" on December 2, 2026, which will provide leveraged exposure to Micron Technology, Inc. and other memory sector stocks.",
+   "url": "https://www.prnewswire.com/news-releases/tradr-to-launch-six-new-leveraged-etfs-302949924.html"
+  },
+  {
+   "time": "2026-11-25T16:01:23Z",
+   "symbols": [
+    "AVGO"
+   ],
+   "headline": "UBS Adjusts Broadcom Price Target",
+   "summary": "UBS analyst Timothy Arcuri maintained a 'buy' rating on Broadcom Inc. while lowering the price target from $470 to $425.",
+   "url": "https://www.moomoo.com/news/post/1005768279/today-s-analyst-rating-ubs-cuts-its-price-target-cut"
+  },
+  {
+   "time": "2026-11-25T14:02:09Z",
+   "symbols": [
+    "TSM"
+   ],
+   "headline": "President Trump to Preside Over TSMC Arizona Plant Expansion Ceremony",
+   "summary": "President Donald Trump is scheduled to preside over a ceremony marking the expansion of TSMC's semiconductor manufacturing facility in Arizona.",
+   "url": "https://www.marketscreener.com/news/trump-to-preside-over-taiwan-semiconductor-plant-expansion-ceremony-in-arizona-ce7851d8d98ef32c"
+  },
+  {
+   "time": "2026-11-25T12:32:12Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA CEO Jensen Huang Reportedly Apologizes to Staff and Enters Therapy",
+   "summary": "Following his reinstatement as CEO, Jensen Huang has reportedly apologized to NVIDIA employees and disclosed that he is in therapy.",
+   "url": "https://www.marketscreener.com/news/nvidia-s-huang-reportedly-apologizes-to-staff-says-he-is-in-therapy-ce7851dbd088f321"
+  }
+ ]
+}
