@@ -1,0 +1,74 @@
+{
+ "date": "2026-11-27",
+ "generated_at": "2026-11-27T09:25:03.717772-05:00",
+ "prev_close": {
+  "SOXL": 32.02,
+  "SOXS": 62.13,
+  "NVDA": 149.3,
+  "AMD": 406.03,
+  "TSM": 342.34,
+  "QQQ": 633.93
+ },
+ "premarket": {
+  "SOXL": 35.59,
+  "SOXS": 55.2853,
+  "NVDA": 151.9775,
+  "AMD": 422.1,
+  "TSM": 354.29,
+  "QQQ": 646.4425
+ },
+ "prediction": {
+  "symbol": "SOXL",
+  "gaps": {
+   "SOXL": 11.149281698938163,
+   "SOXS": -11.016739095445038
+  },
+  "confident": true,
+  "hit_rate": 81,
+  "reason": "SOXL 프리장 +11.1% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)"
+ },
+ "context": {
+  "NVDA": 1.7933690555927528,
+  "AMD": 3.9578356279092786,
+  "TSM": 3.490681778349014,
+  "QQQ": 1.9737983689050997
+ },
+ "events": [],
+ "stop_risk": {
+  "level": "높음",
+  "observed_pct": 27,
+  "vol5": 21.82,
+  "prev_move": 1.81,
+  "gap_abs": 11.15,
+  "symbol": "SOXL"
+ },
+ "news": [
+  {
+   "time": "2026-11-27T14:01:24Z",
+   "symbols": [
+    "ASML"
+   ],
+   "headline": "Dutch Government to Request US Non-Enforcement of MATCH Act",
+   "summary": "The Dutch government reportedly plans to request that the United States refrain from enforcing the proposed semiconductor export regulation known as the MATCH Act.",
+   "url": "https://www.moomoo.com/ja/news/post/1005989189"
+  },
+  {
+   "time": "2026-11-27T13:01:27Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Faces New U.S. Export Controls and Regional Market Shifts",
+   "summary": "New U.S. government export rules require licenses for advanced AI chip sales to data center operators in several Southeast Asian countries and Brazil, impacting NVIDIA's regional operations.",
+   "url": "https://world.storm.mg/articles/1184970"
+  },
+  {
+   "time": "2026-11-27T11:31:22Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "Micron Reports High Bandwidth Memory (HBM) Capacity Largely Booked for Upcoming Year",
+   "summary": "Micron Technology, Inc. has indicated that the majority of its High Bandwidth Memory (HBM) production capacity for the next year is already committed to customers.",
+   "url": "https://www.moomoo.com/news/post/1005986341/where-is-the-memory-market-headed-analysts-debate-whether-dram"
+  }
+ ]
+}

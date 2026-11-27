@@ -1,17 +1,17 @@
-SOXL/SOXS premarket briefing - date (US Eastern): 2026-11-25, generated 09:25 ET
+SOXL/SOXS premarket briefing - date (US Eastern): 2026-11-27, generated 09:25 ET
 
 [Premarket at 09:25 ET vs prior close]
-SOXL: 27.6185 (prior close 32.6), -15.3%
-SOXS: 70.45 (prior close 60.96), +15.6%
-Other premarket moves: NVDA -6.1%, AMD -6.9%, TSM -5.5%, QQQ -3.2%
-Rule-based call: SOXS - SOXS 프리장 +15.6% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)
--6% intraday stop risk if SOXS is bought (statistical baseline): 높음 (historically ~27% of such days stopped out; 5-day avg SOXL range 18.34%, prior-day SOXL move 24.79%, gap 15.57%)
+SOXL: 35.59 (prior close 32.02), +11.1%
+SOXS: 55.2853 (prior close 62.13), -11.0%
+Other premarket moves: NVDA +1.8%, AMD +4.0%, TSM +3.5%, QQQ +2.0%
+Rule-based call: SOXL - SOXL 프리장 +11.1% 갭. 09:35까지 갭의 20% 넘게 반납하지 않으면 매수 (과거 81% 일치)
+-6% intraday stop risk if SOXL is bought (statistical baseline): 높음 (historically ~27% of such days stopped out; 5-day avg SOXL range 21.82%, prior-day SOXL move 1.81%, gap 11.15%)
 Scheduled today (ET): none
 
 [Overnight news, newest first]
-- 2026-11-25 14:02 UTC | TSM | President Trump to Preside Over TSMC Arizona Plant Expansion Ceremony
-  President Donald Trump is scheduled to preside over a ceremony marking the expansion of TSMC's semiconductor manufacturing facility in Arizona.
-- 2026-11-25 12:32 UTC | NVDA | NVIDIA CEO Jensen Huang Reportedly Apologizes to Staff and Enters Therapy
-  Following his reinstatement as CEO, Jensen Huang has reportedly apologized to NVIDIA employees and disclosed that he is in therapy.
-- 2026-11-25 00:01 UTC | MU | Micron Discloses Increased Executive Security Expenses
-  Micron Technology's latest proxy filing reveals a significant increase in security spending for CEO Sanjay Mehrotra.
+- 2026-11-27 14:01 UTC | ASML | Dutch Government to Request US Non-Enforcement of MATCH Act
+  The Dutch government reportedly plans to request that the United States refrain from enforcing the proposed semiconductor export regulation known as the MATCH Act.
+- 2026-11-27 13:01 UTC | NVDA | NVIDIA Faces New U.S. Export Controls and Regional Market Shifts
+  New U.S. government export rules require licenses for advanced AI chip sales to data center operators in several Southeast Asian countries and Brazil, impacting NVIDIA's regional operations.
+- 2026-11-27 11:31 UTC | MU | Micron Reports High Bandwidth Memory (HBM) Capacity Largely Booked for Upcoming Year
+  Micron Technology, Inc. has indicated that the majority of its High Bandwidth Memory (HBM) production capacity for the next year is already committed to customers.
