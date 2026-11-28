@@ -1,0 +1,150 @@
+{
+ "date": "2026-11-27",
+ "generated_at": "2026-11-27T20:10:06.021055-05:00",
+ "note": "SOXL = 3x semiconductor bull ETF, SOXS = 3x bear. Times are US Eastern. change_pct = regular close vs prior close; afterhours_pct = last afterhours trade vs regular close.",
+ "prices": {
+  "SOXL": {
+   "prev_close": 32.02,
+   "open": 35.09,
+   "high": 36.96,
+   "low": 32.02,
+   "close": 35.905,
+   "change_pct": 12.133041848844472,
+   "open_gap_pct": 9.587757651467843,
+   "afterhours_last": 35.85,
+   "afterhours_pct": -0.15318200807686866
+  },
+  "SOXS": {
+   "prev_close": 62.13,
+   "open": 56.29,
+   "high": 62.2,
+   "low": 52.61,
+   "close": 54.2246,
+   "change_pct": -12.723965877997745,
+   "open_gap_pct": -9.399645903750208,
+   "afterhours_last": 54.27,
+   "afterhours_pct": 0.08372583661291344
+  },
+  "NVDA": {
+   "prev_close": 149.3,
+   "open": 151.82,
+   "high": 151.98,
+   "low": 145.39,
+   "close": 150.045,
+   "change_pct": 0.4989953114534318,
+   "open_gap_pct": 1.6878767582049425,
+   "afterhours_last": 149.8,
+   "afterhours_pct": -0.16328434802891367
+  },
+  "AMD": {
+   "prev_close": 406.03,
+   "open": 420.1,
+   "high": 426.88,
+   "low": 398.5901,
+   "close": 422.6449,
+   "change_pct": 4.092037534172355,
+   "open_gap_pct": 3.4652611875969797,
+   "afterhours_last": 422.9,
+   "afterhours_pct": 0.060357997931581586
+  },
+  "AVGO": {
+   "prev_close": 300.86,
+   "open": 306.39,
+   "high": 313.125,
+   "low": 304.75,
+   "close": 312.04,
+   "change_pct": 3.716014092933584,
+   "open_gap_pct": 1.83806421591437,
+   "afterhours_last": 311.67,
+   "afterhours_pct": -0.1185745417254247
+  },
+  "MU": {
+   "prev_close": 601.25,
+   "open": 630.24,
+   "high": 654.44,
+   "low": 607.2704,
+   "close": 645.9082,
+   "change_pct": 7.427559251559246,
+   "open_gap_pct": 4.82162162162163,
+   "afterhours_last": 645.66,
+   "afterhours_pct": -0.038426513241351934
+  },
+  "TSM": {
+   "prev_close": 342.34,
+   "open": 352.64,
+   "high": 354.36,
+   "low": 344.5953,
+   "close": 353.5,
+   "change_pct": 3.259917041537652,
+   "open_gap_pct": 3.0087047964012514,
+   "afterhours_last": 353.0,
+   "afterhours_pct": -0.14144271570014633
+  },
+  "SOXX": {
+   "prev_close": 127.98,
+   "open": 132.02,
+   "high": 134.86,
+   "low": 128.01,
+   "close": 133.35,
+   "change_pct": 4.195968120018745,
+   "open_gap_pct": 3.156743241131421,
+   "afterhours_last": 133.28,
+   "afterhours_pct": -0.05249343832020026
+  },
+  "QQQ": {
+   "prev_close": 633.93,
+   "open": 645.73,
+   "high": 651.6,
+   "low": 636.72,
+   "close": 650.6,
+   "change_pct": 2.6296278768949355,
+   "open_gap_pct": 1.8614042559904176,
+   "afterhours_last": 650.62,
+   "afterhours_pct": 0.0030740854595645573
+  },
+  "SPY": {
+   "prev_close": 716.7,
+   "open": 725.86,
+   "high": 731.04,
+   "low": 719.61,
+   "close": 731.0,
+   "change_pct": 1.9952560346030435,
+   "open_gap_pct": 1.2780800892981725,
+   "afterhours_last": 731.3,
+   "afterhours_pct": 0.04103967168263001
+  }
+ },
+ "events_today": [],
+ "events_next": [],
+ "bot_pick": "SOXS",
+ "bot_stopped": true,
+ "news": [
+  {
+   "time": "2026-11-27T14:01:24Z",
+   "symbols": [
+    "ASML"
+   ],
+   "headline": "Dutch Government to Request US Non-Enforcement of MATCH Act",
+   "summary": "The Dutch government reportedly plans to request that the United States refrain from enforcing the proposed semiconductor export regulation known as the MATCH Act.",
+   "url": "https://www.moomoo.com/ja/news/post/1005989189"
+  },
+  {
+   "time": "2026-11-27T13:01:27Z",
+   "symbols": [
+    "NVDA"
+   ],
+   "headline": "NVIDIA Faces New U.S. Export Controls and Regional Market Shifts",
+   "summary": "New U.S. government export rules require licenses for advanced AI chip sales to data center operators in several Southeast Asian countries and Brazil, impacting NVIDIA's regional operations.",
+   "url": "https://world.storm.mg/articles/1184970"
+  },
+  {
+   "time": "2026-11-27T11:31:22Z",
+   "symbols": [
+    "MU"
+   ],
+   "headline": "Micron Reports High Bandwidth Memory (HBM) Capacity Largely Booked for Upcoming Year",
+   "summary": "Micron Technology, Inc. has indicated that the majority of its High Bandwidth Memory (HBM) production capacity for the next year is already committed to customers.",
+   "url": "https://www.moomoo.com/news/post/1005986341/where-is-the-memory-market-headed-analysts-debate-whether-dram"
+  }
+ ]
+}
